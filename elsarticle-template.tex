@@ -5,6 +5,7 @@
 
 
 \usepackage{lineno,hyperref,graphicx}
+\usepackage{amsmath}
 \usepackage[table]{xcolor}
 \usepackage[section]{placeins}
 \modulolinenumbers[5]
@@ -266,61 +267,98 @@ The ProM notations for pathway models are complex and optimal for detailed analy
 \end{tabular}
 \end{table}
 
-\subsection{Appendicitis Patient Length of Stay}
-This section and demonstrates the potential of pathway performance analysis based on the identified pathway variants. Patient length of stay at each stage of the appendicitis pathway measured from admission for all patient traces that follow the first pathway variant (index 0) and the third pathway variant (index 2) are shown in Fig.~\ref{fig:appendicitis length of stay variant 0} and Fig.~\ref{fig:appendicitis length of stay variant 2} respectively. These plots could be useful for identifying potential rate-determining steps in a healthcare pathway. One patient trace from Fig.~\ref{fig:appendicitis length of stay variant 0} and six patient traces from Fig.~\ref{fig:appendicitis length of stay variant 0} have unusually long surgery waiting times. The number of patient traces that follow each pathway variant is limited for this study, and more samples are required to confirm causes of delay along the appendicitis pathway. 
+%\include{appendicitis_length_of_stay}
 
-\begin{figure}[t]
+\subsection{Probabilistic machine learning model}
+The following section investigates the question if the pathway variants of the appendicitis case study are relevant exogenous variables for predicting the Length of Post-Operation Stay (LoPOS). 
+This is quite a challenging task, because the individual healing process is expected to depend on personal factors like e.g. age \cite{} as well as the individual severity of the appendicitis inflamation, which in general is unknown at this stage of the data analysis, but might be captured by proxis like Length of Surgery (LOS).
+
+For the purpose of this analysis, the patient's $LOPOS_i$, which is given as time interval between end of surgery and discharge, is converted into number of days after surgery. Therefore, a $LOPOS$ of one corresponds to a patient, who has been discharged the day after the surgery. However, we've found that 3 of the $N=448$ patient traces had a LOPOS of zero, because the surgery ended shortly after midnight and the patients were discharged on the same day. In order to simplify our analysis, the interpretation of LOPOS was broadend to /number of night rests/ after surgery, such that the LOPOS of these three patients could be casted to one.
+
+Analysing the LOPOS of the 448 appendicitis patients reveals a histogram, which closely resembles a Geometric distribution
+\begin{equation}
+Pr(LOPOS=k) = \text{Geom}(p) = (1-p)^{k-1}p^{k},
+\end{equation}
+which is parametrized by probability $p$ of being discharged at the $k^\text{th}$ day respectively $k$ night rests after surgery. 
+However, estimating $p$ as inverse mean of the observed LOPOS to 
+\begin{equation}
+ \hat{p} = \frac{N}{\sum\limits_{i=1}^N LOPOS_i} \approx 0.618	
+\end{equation}
+reveals that the average discharge probability $\hat{p}$ does not generalize well over the cohord, because the number of patients being discharged at the first day after surgery is underestimated and the number of patients being discharged at second and third day after surgery is overestimated (Fig.~\ref{fig:Geom}).
+
+\begin{figure}
     \centering
-    \begin{minipage}{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/appendicitis_variant_length_of_stay_0_journal.jpg}
-        \caption{Hospital length of stay of appendicitis patient traces following pathway variant 0. There is one potential outlier for surgery waiting time.}
-        \label{fig:appendicitis length of stay variant 0}
-    \end{minipage}\hfill
-    \begin{minipage}{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{images/appendicitis_variant_length_of_stay_2_journal.jpg}
-        \caption{Hospital length of stay of appendicitis patient traces following pathway variant 2. There are six potential outliers for surgery waiting time.}
-        \label{fig:appendicitis length of stay variant 2}
-    \end{minipage}
+    \includegraphics{images/DS19eH1_G0__empirical_geometric.pdf}
+    \caption{Caption}
+    \label{fig:Geom}
 \end{figure}
 
-\subsection{Generalized Regression Model for Post-operation Length of Stay}
-Post-operation length of stay, measured from exiting theatre to discharge, can also be considered as recovery time and reflects the quality of pre-operation pathway design. Better understanding of post-operation length of stay using all the information available at the end of surgery could be useful for hospital scheduling purposes. Regression models are used to determine if certain clinical decisions are likely to shorten post-operation length of stay.
+Following a probabilistic programming methodology the individualized discharge probability $p_i = p_i(x_i)$ is modelled as generalized linear model (GLM) using the inverse logistic function (logit) as link function and the Geometric distribution for generating the likelihood. 
+For the following analysis, we are comparing two different models of discharge probability $p_i$ with $x_i = (LOS_i, \text{log}(age_i), V_{0,i}, V_{1, i}, V_{2, i}, V_{3, i})$: 
+\begin{eqnarray}
+\label{modelA}\text{model A}&:& \text{logit}(p_i) \sim LOS_i + \text{log}(age_i) \times (V_{0,i} + V_{1,i} + V_{2,i} + V_{3,i}),\\
+\label{modelB}\text{model B}&:& \text{logit}(p_i) \sim LOS_i + \text{log}(age_i) \times (V_{0,i} + V_{1,i}) + V_{2,i} + V_{3,i}. 
+\end{eqnarray}
+These two models have been selected because they were the most credible ones based on WAIC and LOO statistics. The explanatory variables $V_{j}$ are categorical with 
+\begin{equation}
+V_{j,i} = \begin{cases}
+	1: & V_{j,i} = j,\\
+        0: & \text{otherwise}.
+\end{cases}
+\end{equation}
+Therefore, the case $V_{0,i}=V_{1,i}=V_{2,i}=V_{3,i}=0$ corresponds to variants V4--V12 of Fig.~\ref{}.
+These models make the simplifying assumption that the individualised probability of discharge $Pr(LOPOS_i=k|x_i)$ can be estimated from the information $x_i$ being available at the end of surgery, when future treatment steps and therefore the complete pathway variant for the respective $i^\text{th}$ patient have been decided on:
+\begin{equation}
+\begin{split}
+Pr(LOPOS_i=k|x_i) & = \text{Geom}(p_i|x_i) \\
+                  & = (1-p_i)^{k-1}p_i^{k} \\
+          %        & = \left(1-\text{logistic}(f(x_i))\right)^{k-1}\text{logistic}(f(x_i))^{k} \\
+          %        & = \left(1+e^{f(x_i)}\right) \left(2 + e^{-f(x_i)} + e^{f(x_i)}\right)^{-k}
+\end{split}
+\end{equation}
+with $p_i$ being modelled either by Eqn. \eqref{modelA} or \eqref{modelB}.
 
-Pre-operation clinical activities, surgery timestamps, and patient demographics are all considered as explanatory variables, and post-operation length of stay is the target variable. The Python package `tsfresh' \cite{Christ2018} offers a function that selects statistically significant variables based on univariate hypothesis tests. A dummy regression model that always returns the mean of the target variable is built to provide a baseline for comparison. Several regression models are built and compared to the baseline using root mean squared error on cross-validation. The dummy regression model produces a root mean squared error of 29.97 (hours) on leave-one-out cross-validation.
+The statistical model has been fitted using PyMC3 \citep{Salvatier2016_PyMC3} version 0.24.2 using the No-U-Turn Sampler (NUTS) with 20,000 samples, 2,000 tuning steps, 2 chains, and an acceptance rate 90\%. The 95\% credible intervals of the estimated model coefficients are shown in Fig.~\ref{fig:forest_plots}. The Gelman-Rubin convergence statistic R-hat is close to one for all coefficients. 
+However, for Model A the coefficients of the interaction terms $\text{log}(age_i)\times V_2$ and $\text{log}(age_i)\times V_3$ are close to zero with negative expectation values but a 25\% and 15\% probability of being larger than zero. 
+Therefore, we have decided to focus the following analysis of the fitted model on Eq.~\ref{modelB} for which all credible intervals exclude zero (Fig.~\ref{fig:forest_plots}b).
 
-A partial least squares regression model with 3 components is fit from 12 features, which have p-values smaller than 5\% without considering a correction of the false discovery rate. This model has a root mean squared error of 27.91 hours on leave-one-out cross-validation. The root mean squared error is only reduced by approximately two hours compared to the dummy regression model, so the partial least squares regression model does not have strong predictive ability. Statistically significant variables (considering a correction of the false discovery rate) that contributed most to the partial least squares regression model are listed as follows:
-
-\begin{enumerate}
-    \item Surgery start time
-    \item Length of surgery
-    \item Patient age
-\end{enumerate}
-
-The distributions of predicted post-operation length of stay and actual post-operation length of stay are compared in Fig.~\ref{fig:regression distribution}.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\textwidth]{images/akl_pls_regression_distribution.jpg}
-\caption{Patient distributions of actual post-operation length of stay versus prediction.}
-\label{fig:regression distribution}
+\begin{figure}
+    \centering
+    \begin{tabular}{ll}
+(a) Model A \eqref{modelA} & (b) Model B \eqref{modelB}\\
+\includegraphics[width=0.5\textwidth]{images/DS19fm0_c0__forestplot_model_A.pdf}&
+\includegraphics[width=0.5\textwidth]{images/DS19fk1_c0__forestplot_model_B}\\
+\end{tabular}
+    \caption{Caption}
+    \label{fig:forest_plots}
 \end{figure}
 
-The partial least squares regression model does not significantly improve predictivity, and this suggests that the link between pre-operation activities and post-operation length of stay is minimal. No clinical decision that is likely to shorten post-operation length of stay is identified from generalized regression models.
+The estimated coefficients of model B are listed in Tab.~\ref{}.
 
-\subsection{Probabilistic Model for Post-operation Length of Stay}
-A probabilistic machine learning model which estimates the conditional probability distribution of post-operation length of stay for individual patients based on the available information at the end of surgery is developed. The model considers 26 features, from which 23 features are selected based on univariate hypothesis tests. Selection criteria for features is a p-value less than or equal to 10\% (for the univariate hypothesis tests). For the purpose of this machine learning model, no controlling procedure is used. Instead a partial least squares model with 2 components is fitted for the purpose of dimensionality reduction at each node of the probabilistic model.
+\input{DS19fk1_c0__model_B__coeff}
 
-This probabilistic model is inspired by the seminal work of M. Feindt \cite{Feindt2004}. The model decomposes the regression problem into a hierarchical set of classifications, which are designed as machine learning pipeline combining partial least squares discriminant analysis with logistic regression such that the conditional probability distribution can be estimated from a Bayesian decision tree. This model estimates the probability distribution of post-operation length of stay for individual patients in terms of 16 intervals of adaptive length reflecting the multi-modality of the appendicitis data set. Each interval summarizes the observations from approximately 25 samples. This algorithm is still in development, but the results are promising. The predicted probability distributions of four example patients are shown in Fig.~\ref{fig:probabilistic distribution}.
+It is important to note that both the coefficients of $LOS$ and $\text{log}(age)$ are negative. This means that for the base model of variants V4--V12 as well as variants V2 and V3 the probability of discharge decreases with increasing LOS and age. 
+Compared to the base model, Variants V2 and V3 have a higher daily discharge propability because both coefficients are positive. 
+The situation is more complicated for variants V0 and V1, because their coefficients are negative but the coefficients of their interaction terms with $\text{log}(age)$ are positive, which basically counterbalances the effect of $\text{log}(age)$.
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=\textwidth]{images/akl_pls_probabilistic_distribution.png}
-\caption{Predicted probability distributions of post-operation length of stay for four patients.}
-\label{fig:probabilistic distribution}
+\begin{figure}
+    \centering
+    \begin{tabular}{ll}
+(a)  & (b) \\
+\includegraphics[width=0.5\textwidth]{images/DS19fk1_c0__p_LoS__model_B__traces_V0_V4-12__age_mean.png}&
+\includegraphics[width=0.5\textwidth]{images/DS19fk1_c0__p_LoS__model_B__mean__age_mean}\\
+(c) & (d) \\
+\includegraphics[width=0.5\textwidth]{images/DS19fk1_c0__p_age__model_B__traces__LoS_4h.png}&
+\includegraphics[width=0.5\textwidth]{images/DS19fk1_c0__p_age__model_B__mean__LoS_4h.pdf}\\
+\end{tabular}
+    \caption{Caption}
+    \label{fig:posterior}
 \end{figure}
 
+This is visualized in Fig.~\ref{fig:posterior}, which shows the posterior distributions of daily discharge probability $p_i$ as function of LOS (Fig.~\ref{fig:posterior}(a)) and age (Fig.~\ref{fig:posterior}(c)). While the discharge probability decreases with increasing LOS for all pathway variants (Fig.~\ref{fig:posterior}(b)), the effect is different for age. 
+The daily discharge probability $p_i$ decreases for Variants V2, V3, and V4-V12 with increasing age of the patients, while its expectation value is constant for $V1$ and even increases by nearly 10\% for V0. Note, that the corresponding graphics for model A \eqref{modelA}, which are not shown here, resemble nearly the same correlations. 
+From the clinical perspective, the difference effect of age with respect to the pathway variants might be related to the fact that the most often pathway variants V0 and V1 are only found for older patients of all ages, for whom no complications are expected. 
+However, the uncertainty of daily discharge probabilities for V1 is significantly larger compared to V0.
 \subsection{Cholecystitis Pathway Variants}
 This section shows the cholecystitis pathway variant plot auto-generated by ProM. Cholecystitis pathway variants are analyzed without activities from the `antibiotics' sub-process and the `monitoring labs' sub-process (see section 3.7 for the activities from the two sub-processes). Clinicians confirmed that these sub-processes are standard monitoring and maintenance systems while the patient is waiting for further diagnosis. Only analyzing activities from the primary cholecystitis pathway significantly reduces the level of clinical variation between patient traces.
 
