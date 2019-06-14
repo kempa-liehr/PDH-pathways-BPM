@@ -11,6 +11,12 @@
 \modulolinenumbers[5]
 \graphicspath{ {./images/} }
 
+% Adapted from https://www.overleaf.com/learn/how-to/Is_there_a_way_to_run_a_word_count_that_doesn%27t_include_LaTeX_commands%3F
+\newcommand{\wordcount}[2]{%
+  (\immediate\write18{texcount -1 -sum -merge #1.tex > #1-words.sum }%
+  \input{#1-words.sum}/#2 words)%
+}
+
 \journal{Elsevier}
 
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -49,7 +55,7 @@
 
 \begin{frontmatter}
 
-\title{Healthcare Pathway Discovery, Conformance, and Enrichment}
+\title{Healthcare Pathway Discovery, Conformance, and Enrichment \wordcount{main}{3000}}
 
 %% Group authors per affiliation:
 %\author{Michael O’Sullivan,  Andreas W. Kempa-Liehr, Christina Lin\fnref{myfootnote}, Randall Britten, Delwyn Armstrong}
