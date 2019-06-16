@@ -1,9 +1,10 @@
 \section{Introduction}
-Healthcare pathways are critical for reducing clinical variability, affecting operational excellence, and thereby maximizing health outcomes \cite{Lin2001}. They define the execution sequence of clinical activities as patients move through a treatment process, a department, a hospital, or a wider health organization (e.g., a District Health Board) \cite{Huang2016}. The accurate definition of healthcare pathways and patient conformance to those pathways is an issue of increasing relevance as precision medicine enables targeted approaches and diagnostic splitting. The proliferation of pathway branches is exponential, and pathways are increasingly non-linear. 
+Healthcare pathways are critical for reducing clinical variability, affecting operational excellence, and maximizing health outcomes \cite{Lin2001}. They define the execution sequence of clinical activities as patients move through a treatment process, a department, a hospital, or a wider health organization %(e.g., a District Health Board) 
+\cite{Huang2016}. The accurate definition of healthcare pathways and patient conformance to those pathways is an issue of increasing relevance as precision medicine enables targeted approaches and diagnostic splitting. The proliferation of pathway branches is exponential, and pathways are increasingly non-linear. 
 
 Most healthcare pathways result from clinician-led practice rather than explicit pathway design via a consensus model and systems approach. In addition, healthcare pathways “shift” dynamically as steps in the pathway are altered or resources change along the pathway. If no explicit redesign of pathways is performed, then the providers of the pathways (and its associated resources) may be unaware of the change \cite{Zhang2015}. Pathway discovery (identification of pathways without a priori knowledge), conformance analysis (including gaps in care and clinical variability) and pathway enrichment (enrichment of a priori models with additional event data) are critical for healthcare services now, and into the future \cite{Baker2017}.
 
-Past studies have shown that there is potential for informative healthcare pathways to be extracted from hospital health records \cite{Xu2017}, \cite{Iwata2013}, but there is currently no consensus on a systematic healthcare pathway mining method that supports explicit design and conformance analysis of concise and comprehensible healthcare pathway models. The research described in this paper investigates the utilization of Business Process Modelling (BPM), outlined by Becker, Rosemann, and Von Uthmann \cite{Becker2000}, to provide a scaffold for healthcare pathway discovery, conformance analysis and enrichment. The main objectives of applying BPM to healthcare data include:
+Past studies have shown that there is potential for informative healthcare pathways to be extracted from hospital health records \cite{Xu2017}, \cite{Iwata2013}, but there is currently no consensus on a systematic healthcare pathway mining method that supports explicit design and conformance analysis of concise and comprehensible healthcare pathway models. The research described in this paper investigates the utilization of Business Process Modelling (BPM) as outlined by Becker et al. \cite{Becker2000} to provide a scaffold for healthcare pathway discovery, conformance analysis and enrichment. The main objectives of applying BPM to healthcare data include:
 \begin{enumerate}
     \item Pathway discovery
     \begin{itemize}
@@ -21,102 +22,104 @@ Past studies have shown that there is potential for informative healthcare pathw
 \end{enumerate}
 
 \section{Healthcare Pathway Mining Methodology}
-This chapter outlines the proposed process mining pipeline designed for mining healthcare pathways from hospital records using business process modelling tools. This study adopts the scientific computing practices recommended by Wilson et al. \cite{Wilson2014}, \cite{Wilson2017} to ensure that all results are reproducible. The proposed process mining pipeline consists of three major sections that correspond to each of the three main objectives (i.e. pathway discovery, conformance, and enrichment). An overview of the process mining pipeline designed for this study is shown in Fig.~\ref{fig:pipeline}. This chapter discusses each step of the designed pipeline in detail.
+This chapter outlines the proposed process mining pipeline designed for mining healthcare pathways from hospital records using business process modelling tools. This study adopts the scientific computing practices recommended by Wilson et al. \cite{Wilson2014}, \cite{Wilson2017} to ensure that all results are reproducible. The proposed process mining pipeline consists of three major sections that correspond to each of the three main objectives (i.e. pathway discovery, conformance, and enrichment). An overview of the process mining pipeline designed for this study is shown in Fig.~\ref{fig:pipeline}. It comprises three phases, which are pathway discovery, conformance analysis, and data enrichment. The following sections elaborate these phases and their respective objectives.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\textwidth]{images/pipeline_diagram_journal.jpg}
-\caption{Overview of the process mining pipeline designed based on business process modelling methods.}
+\caption{The process mining pipeline comprises three sections, which are subdivided into five steps: Clinical data processing, pathway visualization, conformance analysis, healthcare pathway conformance evaluation, and prescriptive analytics of healthcare pathways. The first two steps are iterative.}
 \label{fig:pipeline}
 \end{figure}
 
-This study chooses ProM (version 6.7) as the main process mining tool. ProM is an open-source process mining software that is effective for construction of business models from input data files. The use of ProM in the healthcare sector has not been thoroughly explored in the past, but Van Der Aalst et al. \cite{VanDerAalst2007} has demonstrated the applicability of the software for industrial processes. ProM is chosen for this study because it has an intuitive user interface, and supports many process mining plug-ins \cite{VanDongen2005}. The process mining plug-ins supported by ProM are well documented. All these features of ProM make it easy for the process mining steps in the pipeline (see Fig.~\ref{fig:pipeline}) to be repeated by users with no background in process mining.
+This study evaluates ProM (version 6.7) as the main process mining tool\footnote{\url{http://www.promtools.org}}. 
+ProM is an open-source process mining software that is effective for construction of business models from input data files. The use of ProM in the healthcare sector has not been thoroughly explored in the past, but Van Der Aalst et al.  have demonstrated the applicability of the software for industrial processes \cite{VanDerAalst2007}. ProM is chosen for this study because it has an intuitive user interface and supports many process mining plug-ins \cite{VanDongen2005}. The process mining and conformance analysis plug-ins supported by ProM are well documented. All these features of ProM make it easy for the process mining steps in the pipeline (see Fig.~\ref{fig:pipeline}) to be repeated by users with no background in process mining.
 
 \subsection{Healthcare Pathway Discovery}
-Healthcare pathway discovery is the first stage of the proposed process mining pipeline. The aim is to use patient healthcare records stored in hospitals’ information systems to design a concise pathway model that is easy for clinical interpretation.
+Healthcare pathway discovery is the first phase of the proposed process mining pipeline. It consists of two steps: clinical data processing and pathway visualization, which are conducted iteratively until a concise model is produced.
+The aim is to use patient healthcare records stored in hospitals’ information systems to design a concise pathway model that is easy for clinical interpretation. Therefore, clinical input is critical to the selection of appropriate processing methods. 
 
 \subsubsection{Clinical Data Processing}
-Healthcare pathways generally have much higher levels of complexity than standard business processes, and unprocessed clinical data contains too many clinical variations for a clean and concise pathway model to be mined \cite{Huang2013}, \cite{Veiga2010}. A pathway variant is a unique activity sequence of a complete patient trace. The ProM plug-in \texttt{`Explore Event Log'} organizes patient traces into pathway variants, and the total number of pathway variants is also an indicator of the level of clinical variation between patient traces. 
-There are several ways to reduce clinical variations. Pathway variants visualized by the plug-in \texttt{`Explore Event Log'} are examined closely to determine the most suitable processing methods. Clinical input is highly recommended at this step particularly for complex or unfamiliar healthcare pathways. There are three effective methods for reducing clinical variations without filtering patient traces:
+ A pathway variant is a unique activity sequence of a complete patient trace. The ProM plug-in \texttt{Explore Event Log} organizes patient traces into pathway variants, and the total number of pathway variants is also an indicator of the level of clinical variation between patient traces. 
+ 
+However, healthcare pathways generally have much higher levels of complexity than standard business processes, and unprocessed clinical data contains too many clinical variations for a clean and concise pathway model to be mined \cite{Huang2013, Veiga2010}.
+In order to reduce healthcare pathway variations to a meaningful pathway model, the pathway variants visualized by the plug-in \texttt{Explore Event Log} are examined closely to determine the most suitable processing methods. 
+There are three effective methods for reducing clinical variations without filtering patient traces:
 
-\begin{enumerate}
-    \item Cluster clinical activities\\
-        Cluster clinical activities that are similar in nature so that the range of activities is reduced to a manageable size, e.g., `Abdomen CT scan' and `Pelvis CT scan' could be clustered into a single activity under `CT scan'.
-    \item Merge consecutive clinical activities\\
-        Merge series of identical activities that are performed consecutively into a single activity, e.g., a patient receiving the same medication five times on the same day could be regarded as a single activity.
-    \item Condense repetitive activity patterns\\
-        Activity sets that repeat, but with variable cycle length, indicate an activity that must be performed periodically while the patient is waiting for a different activity to begin, e.g., lab tests to monitor a patient’s condition, medication to prevent infection. These repetitive patterns could be condensed into a single, parallel activity.
-\end{enumerate}
-
-Clinical data processing and pathway visualization are conducted iteratively until a concise model is produced. Appropriate processing methods must be chosen in context of the clinical case and clinical input is critical to the selection of appropriate processing methods. 
+\begin{description}
+    \item[Cluster clinical activities] that are similar in nature so that the range of activities is reduced to a manageable size, e.g., `Abdomen CT scan' and `Pelvis CT scan' could be clustered into a single activity under `CT scan'.
+    \item[Merge consecutive clinical activities] that are performed consecutively into a single activity, e.g., a patient receiving the same medication five times on the same day could be regarded as a single activity.
+    \item[Condense repetitive activity patterns] 
+         that repeat but exhibit variable cycle length. These patterns indicate an activity that must be performed periodically while the patient is waiting for a different activity to begin, e.g., lab tests to monitor a patient’s condition, medication to prevent infection. These repetitive patterns could be condensed into a single, parallel activity.
+\end{description}
+Clinical input is highly recommended at this step particularly for complex or unfamiliar healthcare pathways. 
 
 \subsubsection{Pathway Visualization}
-ProM offers a plug-in known as \texttt{`Inductive Visual Miner'} that visualizes healthcare pathway models from input clinical data almost instantaneously. It is the primary process-mining tool used in this study to construct healthcare pathway models. Pathway models constructed by \texttt{`Inductive Visual Miner'} are in the form of process trees. A process tree is a hierarchical map comprised of decision nodes and `tasks' representing clinical activities \cite{25a7fd818bf44606a903d9b78b95cdd3}. Healthcare pathway models constructed by this plug-in allow for the identification of healthcare pathway branches throughout the process.
+ProM offers a plug-in known as \texttt{Inductive Visual Miner} that visualizes healthcare pathway models from input clinical data almost instantaneously. It is the primary process-mining tool used in this study to construct healthcare pathway models. Pathway models constructed by \texttt{Inductive Visual Miner} are in the form of process trees. A process tree is a hierarchical map comprised of decision nodes and `tasks' representing clinical activities \cite{25a7fd818bf44606a903d9b78b95cdd3}. Healthcare pathway models constructed by this plug-in allow for the identification of healthcare pathway branches throughout the process.
 
 \subsection{Healthcare Pathway Conformance Analysis}
 Conformance analysis evaluates the degree to which a healthcare pathway model captures movement of patient traces by comparing the discovered model to real clinical data. 
 Accuracy of the discovered healthcare pathway model is validated if the majority of the patient traces conform to the model. Patient traces rarely all follow identical pathways, so the healthcare pathway model is not expected to capture all patient traces. The objective is to discover a healthcare pathway model that captures the fundamental structure of most patient traces. 
 
-ProM offers tools for conformance analysis of a discovered healthcare pathway model. Plug-in \texttt{`Inductive Visual Miner'} compares patient traces from input clinical data to the healthcare pathway model and visualizes patient deviations from the pathway model. If valid patient traces deviate from a healthcare pathway model, then adjustments are made to the model to improve patient conformance, e.g., if a new form of treatment has been introduced, but not yet included in the model. Conversely, if invalid patient traces don't conform to a healthcare pathway model, then the conformance analysis can identify where these invalid patient traces deviate from the model and investigate the reason for the discrepancy, e.g., clinicians following obsolete pathways, data errors, etc.
+ProM offers tools for conformance analysis of a discovered healthcare pathway model. Its plug-in \texttt{Inductive Visual Miner} compares patient traces from input clinical data to a healthcare pathway model and visualizes patient traces, which are deviating from the pathway model. If valid patient traces deviate from a healthcare pathway model, then adjustments are made to the model to improve patient conformance, e.g., if a new form of treatment has been introduced, but not yet included in the model. Conversely, if patient traces do not conform to a healthcare pathway model, then the conformance analysis can identify where these invalid patient traces deviate from the model and investigate the reason for the discrepancy, e.g., clinicians following obsolete pathways, data errors, etc.
 
 \subsection{Healthcare Pathway Data Enrichment}
-\subsubsection{Evaluate Healthcare Pathway Performance}
+\subsubsection{Healthcare Pathway Performance Evaluation}
 The main objectives of evaluating healthcare pathway performance are to understand the strengths and weaknesses of current pathway design, and to identify potential methods of improvement. Possible indicators of healthcare pathway performance include waiting times of clinical activities, hospital length of stay, recovery time and readmission rates. Most of these indicators can be calculated or estimated using standard clinical timestamps.
 
-For surgical healthcare pathways, hospital length of stay is one of the critical indicators for evaluating healthcare pathway performance. Hospital length of stays are analyzed based on pathway variants because patients that follow identical activity sequences are likely to have similar clinical diagnoses. One approach is to analyze length of stay at each step of the pathway variants (see section 3.3 for application example). This allows for potential rate-determining steps to be identified because the contributions of all clinical activities to total length of stay is clear.
+For surgical healthcare pathways, Length of Post-Operation Stay (LOPOS) is one of the critical indicators for evaluating healthcare pathway performance. Length of Post-Operation stays are analyzed based on pathway variants because patients that follow identical activity sequences are likely to have similar clinical diagnoses. 
+%One approach is to analyze length of stay at each step of the pathway variants (see section 3.3 for application example). 
+%This allows for potential rate-determining steps to be identified because the contributions of all clinical activities to total length of stay is clear.
 
-\subsubsection{Regression Model for Healthcare Pathway Performance}
-Machine learning techniques are used to explore factors that influence healthcare pathway performance indicators. All information derived from the discovered healthcare pathways such as time-stamped clinical activities and patient demographics are all considered as explanatory variables to build regression models for performance indicators. Performance indicators such as hospital length of stay and patient readmissions are all dependent on human decisions, so regression models are not expected to have powerful predictive abilities.  The aim is to investigate if certain clinical decisions are likely to improve pathway performance, either by shortening hospital length of stay or decreasing probability of readmission.
+\subsubsection{Regression Models for Healthcare Pathway Performance}
+Machine learning techniques are used to explore factors that influence healthcare pathway performance indicators. All information derived from the discovered healthcare pathways such as time-stamped clinical activities and patient demographics are all considered as explanatory variables to build regression models for performance indicators. Performance indicators such as LOPOS and patient re-admissions dependent on human decisions, so regression models should always focus on modelling the uncertainties involved. 
+Therefore, probabilistic machine learning models are important approaches for this purpose.  The aim is to investigate if certain clinical decisions, clinical processes, or demographics are predictors for  pathway performance, e.g. LOPOS.
 
-\section{Case Studies: Appendicitis and Cholecystitis}
-The two case studies apply the designed process mining pipeline (see section 2) to discover appendicitis and cholecystitis pathways from hospital records. Two years’ worth of data, from 2015 to 2017, on 448 appendicitis patients and 52 cholecystitis patients are collected from North Shore Hospital for this study. 
+\section{Case Study: Appendicitis Healthcare pathways}
+This section discusses the healthcare pathway discovery process for an appendicitis case study. For this purpose, two years’ worth of data from 2015 to 2017 from 448 appendicitis patients have been analysed. 
+A second case study on 52 cholecystitis patients is presented in \ref{sec:Cholecystitis}.
+The patients' traces from both case studies were collected from North Shore Hospital in Auckland, New Zealand.
 
 \subsection{Appendicitis Pathway Variants}
-This section shows the appendicitis pathway variant plot auto-generated by ProM. Appendicitis pathway variants are analyzed without activities representing antibiotics (i.e. pre-operation and post-operation cefuroxime/metronidazole) because the clinicians confirmed that antibiotics are usually taken while the patient is waiting for surgery or discharge. The duration of these activities are therefore highly variable and result in a high number of unique pathway variants.
+Appendicitis pathway variants are analyzed without activities representing antibiotics (i.e. pre-operation and post-operation cefuroxime/metronidazole) because the clinicians confirmed that antibiotics are usually taken while the patient is waiting for surgery or discharge. The duration of these activities are therefore highly variable and result in a high number of unique pathway variants.
 
-The appendicitis pathway model consists of 13 pathway variants. The 13 pathway variants from the appendicitis pathway model are shown in Fig.~\ref{fig:appendicitis pathway variants}, and the number of patient traces that follow each pathway variant are listed in Table \ref{table:appendicitis variant table}. This plot is generated automatically by ProM tools. All clinical activities are represented by a start event and a stop event, and they are colour coded such that the same colour refers to the same clinical activity. Pathway variants from Fig.~\ref{fig:appendicitis pathway variants} are ordered from the most frequent (index 0) to the least frequent (index 12). The most frequent pathway variant (index 0) only consists of anesthesia and surgery, while the second most frequent variant (index 1) also includes pre-operation X-ray.
+The appendicitis pathway model, which has been generated by ProM, is shown in Fig.~\ref{fig:appendicitis pathway variants} in form of a so-called pathway variant plot.
+The figure shows the original plot generated by ProM, which was amended by a legend.
+For the purpose of readability, the variant specific numbers of patient traces given in  Fig.~\ref{fig:appendicitis pathway variants} are repeated in Tab.~\ref{table:appendicitis variant table}.
+The pathway variant plot visualizes the 13 pathway variants of the appendicitis model sorted from the most common pathway (index 0) to the least common pathway (index 12). 
+All clinical activities are represented by a start event and a stop event, and they are colour coded such that the same colour refers to the same clinical activity. The most frequent pathway variant (index 0) only consists of anesthesia and surgery, while the second most frequent variant (index 1) also includes pre-operation X-ray.
+These pathway variant indices are used in Sec.~\ref{sec:ML} as one-hot encoded feature for the machine learning model to be discussed.
 
 \begin{figure}[t]
 \hspace{-2cm}
 \includegraphics[width=1.5\textwidth]{images/appendicitis_variant_index_anes.jpg}
-\caption{Appendicitis pathway variants auto-generated by ProM and appended with a legend. The top three pathway variants account for approximately 70\% of the patient traces. The statistics on the left are not readable in this reproduction but are listed in Table \ref{table:appendicitis variant table}.}
+\caption{Appendicitis pathway variants auto-generated by ProM and appended with a legend. The top three pathway variants account for approximately 70\% of the patient traces. The statistics on the left are not readable in this reproduction and are listed in Table \ref{table:appendicitis variant table}.}
 \label{fig:appendicitis pathway variants}
 \end{figure}
 \clearpage
 
 \begin{table}[t]
 \centering
-\caption{Number of patient traces that follow each appendicitis pathway variant.}
+\caption{Number of patient traces shown in Fig.~\ref{fig:appendicitis pathway variants} that follow each appendicitis pathway variant.}
 \label{table:appendicitis variant table}
 \begin{tabular}{ l l l }
+ \hline
  \hline
  Index & Number of Patient Traces & Percentage of Patients \% \\ 
  \hline
  0 & 148 & 33.04\\ 
- \hline
  1 & 86 & 19.20\\ 
- \hline
  2 & 82 & 18.30\\ 
- \hline
  3 & 78 & 17.41\\ 
- \hline
  4 & 29 & 6.47\\ 
- \hline
- 5 & 6 & 1.34\\ 
- \hline
+ 5 & 6 & 1.34\\
  6 & 6 & 1.34\\ 
- \hline
  7 & 3 & 0.67\\ 
- \hline
  8 & 2 & 0.45\\ 
- \hline
  9 & 2 & 0.45\\ 
- \hline
  10 & 2 & 0.45\\ 
- \hline
  11 & 2 & 0.45\\ 
- \hline
  12 & 2 & 0.45\\ 
+ \hline
  \hline
 \end{tabular}
 \end{table}
@@ -171,6 +174,7 @@ The ProM notations for pathway models are complex and optimal for detailed analy
 %\include{appendicitis_length_of_stay}
 
 \subsection{Probabilistic machine learning model}
+\label{sec:ML}
 The following section investigates the question if the pathway variants of the appendicitis case study are relevant exogenous variables for predicting the Length of Post-Operation Stay (LoPOS). 
 This is quite a challenging task, because the individual healing process is expected to depend on personal factors like e.g. age \cite{} as well as the individual severity of the appendicitis inflamation, which in general is unknown at this stage of the data analysis, but might be captured by proxis like Length of Surgery (LOS).
 
