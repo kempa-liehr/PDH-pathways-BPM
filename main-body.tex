@@ -27,7 +27,11 @@ This chapter outlines the proposed process mining pipeline designed for mining h
 \begin{figure}[t]
 \centering
 \includegraphics[width=\textwidth]{images/pipeline_diagram_journal.pdf}
-\caption{The process mining pipeline comprises three sections, which are subdivided into five steps: Clinical data processing, pathway visualization, conformance analysis, healthcare pathway conformance evaluation, and prescriptive analytics of healthcare pathways. The first two steps are iterative.}
+\caption{The process mining pipeline comprises three sections, which
+  are subdivided into five steps: Clinical data processing, pathway
+  visualization, conformance analysis, healthcare pathway conformance
+  evaluation, and prescriptive analytics of healthcare pathways. The
+  first three steps are connected in two iterative cycles.}
 \label{fig:pipeline}
 \end{figure}
 
@@ -38,8 +42,8 @@ ProM is an open-source process mining software that is effective for constructio
 Healthcare pathway discovery is the first phase of the proposed process mining pipeline. It consists of two steps: clinical data processing and pathway visualization, which are conducted iteratively until a concise model is produced.
 The aim is to use patient healthcare records stored in hospitals’ information systems to design a concise pathway model that is easy for clinical interpretation. Therefore, clinical input is critical to the selection of appropriate processing methods. 
 
-\subsubsection{Clinical Data Processing}
- A pathway variant is a unique activity sequence of a complete patient trace. The ProM plug-in \plugin{Explore Event Log} organizes patient traces into pathway variants, and the total number of pathway variants is also an indicator of the level of clinical variation between patient traces. 
+%\subsubsection{Clinical Data Processing}
+ A pathway variant is a unique activity sequence of a complete patient trace. The ProM plug-in \plugin{Explore Event Log} organizes patient traces into pathway variants, and the total number of pathway variants is an indicator of the level of clinical variation between patient traces. 
  
 However, healthcare pathways generally have much higher levels of complexity than standard business processes, and unprocessed clinical data contains too many clinical variations for a clean and concise pathway model to be mined \cite{Huang2013, Veiga2010}.
 In order to reduce healthcare pathway variations to a meaningful pathway model, the pathway variants visualized by the plug-in \plugin{Explore Event Log} are examined closely to determine the most suitable processing methods. 
@@ -53,12 +57,14 @@ There are three effective methods for reducing clinical variations without filte
 \end{description}
 Clinical input is highly recommended at this step particularly for complex or unfamiliar healthcare pathways. 
 
-\subsubsection{Pathway Visualization}
-ProM offers a plug-in known as \plugin{Inductive Visual Miner} that visualizes healthcare pathway models from input clinical data almost instantaneously. It is the primary process-mining tool used in this study to construct healthcare pathway models. Pathway models constructed by \plugin{Inductive Visual Miner} are in the form of process trees. A process tree is a hierarchical map comprised of decision nodes and `tasks' representing clinical activities \cite{25a7fd818bf44606a903d9b78b95cdd3}. Healthcare pathway models constructed by this plug-in allow for the identification of healthcare pathway branches throughout the process.
+%\subsubsection{Pathway Visualization}
 
 \subsection{Healthcare Pathway Conformance Analysis}
 Conformance analysis evaluates the degree to which a healthcare pathway model captures movement of patient traces by comparing the discovered model to real clinical data. 
 Accuracy of the discovered healthcare pathway model is validated if the majority of the patient traces conform to the model. Patient traces rarely all follow identical pathways, so the healthcare pathway model is not expected to capture all patient traces. The objective is to discover a healthcare pathway model that captures the fundamental structure of most patient traces. 
+
+ProM offers a plug-in known as \plugin{Inductive Visual Miner} that visualizes healthcare pathway models from input clinical data almost instantaneously. It is the primary process-mining tool used in this study to construct healthcare pathway models. Pathway models constructed by \plugin{Inductive Visual Miner} are in the form of process trees. A process tree is a hierarchical map comprised of decision nodes and `tasks' representing clinical activities \cite{25a7fd818bf44606a903d9b78b95cdd3}. Healthcare pathway models constructed by this plug-in allow for the identification of healthcare pathway branches throughout the process.
+
 
 ProM offers tools for conformance analysis of a discovered healthcare pathway model. Its plug-in \plugin{Inductive Visual Miner} compares patient traces from input clinical data to a healthcare pathway model and visualizes patient traces, which are deviating from the pathway model. If valid patient traces deviate from a healthcare pathway model, then adjustments are made to the model to improve patient conformance, e.g., if a new form of treatment has been introduced, but not yet included in the model. Conversely, if patient traces do not conform to a healthcare pathway model, then the conformance analysis can identify where these invalid patient traces deviate from the model and investigate the reason for the discrepancy, e.g., clinicians following obsolete pathways, data errors, etc.
 
@@ -86,24 +92,32 @@ Fig.~\ref{fig:appendicitis pathway variants} in form of a pathway
 variant plot.
 The pathway variants are extracted without activities related to medication (i.e. pre-operation and post-operation cefuroxime/metronidazole) because the clinicians confirmed that antibiotics are usually taken while the patient is waiting for surgery or discharge. The duration of these activities are therefore highly variable and result in a high number of unique pathway variants.
 
-For the purpose of readability, Fig.~\ref{fig:appendicitis pathway
-  variants} was amended by a legend.
 %The variant specific numbers of patient traces given in  Fig.~\ref{fig:appendicitis pathway variants} are repeated in Tab.~\ref{table:appendicitis variant table}.
-The pathway variant plot visualizes the 13 pathway variants of the appendicitis model sorted from the most common pathway (index 0) to the least common pathway (index 12). 
+The pathway variant plot visualizes the 13 pathway variants of the
+appendicitis model sorted from the most common pathway (index 0) to
+the least common pathway (index 12).
+The top four variants account for approximately 88\% of the patient
+traces (Tab.~\ref{table:appendicitis variant table}).
 All clinical activities are represented by a start event and a stop
 event.
 The activities are colour coded such that the same colour refers to the same clinical activity. The most frequent pathway variant (index 0) only consists of anesthesia and surgery, while the second most frequent variant (index 1) also includes pre-operation X-ray.
-These pathway variant indices are used in Sec.~\ref{sec:ML} as one-hot encoded feature for the machine learning model to be discussed.
+The pathway variant indices are used in Sec.~\ref{sec:ML} as one-hot encoded feature for the machine learning model to be discussed.
 
 \begin{figure}[t]
 \hspace{-2cm}
 \includegraphics[width=1.5\textwidth]{images/appendicitis_variant_index_anes.jpg}
 \caption{Appendicitis pathway variant plot auto-generated by ProM's
-  plugin \plugin{Explore Event Log}.
-  The top four variants account for approximately 88\% of the patient traces. The statistics on the left are not readable in this reproduction and are listed in Table \ref{table:appendicitis variant table}.}
+  plugin \plugin{Explore Event Log}. 
+  For the purpose of readability the legend was added and the
+  statistics on the left are repeated in Tab.~\ref{table:appendicitis variant table}.
+ The top four variants account for approximately 88\% of the patient
+ traces. They are modelled as one-hot encoded features V0, V1, V2, and V3
+ in Sec.~\ref{sec:ML}, while pathway variants V4--V12 together represent
+ the base model.
+ }
 \label{fig:appendicitis pathway variants}
 \end{figure}
-%\clearpage
+\clearpage
 
 \begin{table}[t]
 \centering
@@ -133,11 +147,14 @@ These pathway variant indices are used in Sec.~\ref{sec:ML} as one-hot encoded f
 \end{table}
 
 
-The first stage of the appendicitis pathway model visualized by \plugin{Inductive Visual Miner} from processed clinical data is shown in Fig.~\ref{fig:ivm pathway model example}. Unlike the pathway variants, the appendicitis pathway model incorporates activities representing antibiotics. The model indicates that 42 patients perform ultrasound and 183 patients perform X-ray upon admission. Please refer to Leeman's manual on \plugin{Inductive Visual Miner} for details on the model notations used in  Fig.~\ref{fig:ivm pathway model example} \cite{leemansinductive}.
+The first stage of the appendicitis pathway model visualized by \plugin{Inductive Visual Miner} from processed clinical data is shown in Fig.~\ref{fig:ivm pathway model example}. Unlike the pathway variants, the appendicitis pathway model incorporates activities representing antibiotics. The model indicates that 42 patients perform ultrasound and 183 patients perform X-ray upon admission. 
 
 \begin{figure}[t]
 \includegraphics[width=\textwidth]{images/ivm_appendicitis_first_stage_example.png}
-\caption{First stage of the appendicitis pathway model generated by ProM. There are 214 patients that enter the first stage of the treatment pathway, which consists of X-ray, or ultrasound, or both.}
+\caption{First stage of the appendicitis pathway model generated by
+  ProM. There are 214 patients that enter the first stage of the
+  treatment pathway, which consists of X-ray, or ultrasound, or both.
+  Please refer to Leeman's manual on \plugin{Inductive Visual Miner} for details on the model notations used in  Fig.~\ref{fig:ivm pathway model example} \cite{leemansinductive}.}
 \label{fig:ivm pathway model example}
 
 \includegraphics[width=\textwidth]{images/communicative_appendicitis_process_models_anes.jpg}
