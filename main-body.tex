@@ -43,7 +43,7 @@ Healthcare pathway discovery is the first phase of the proposed process mining p
 The aim is to use patient healthcare records stored in hospitals’ information systems to design a concise pathway model that is easy for clinical interpretation. Therefore, clinical input is critical to the selection of appropriate processing methods. 
 
 %\subsubsection{Clinical Data Processing}
- A pathway variant is a unique activity sequence of a complete patient trace. The ProM plug-in \plugin{Explore Event Log} organizes patient traces into pathway variants, and the total number of pathway variants is an indicator of the level of clinical variation between patient traces. 
+A pathway variant is a unique activity sequence of a complete patient trace. The ProM plug-in \plugin{Explore Event Log} organizes patient traces into pathway variants, and the total number of pathway variants is an indicator of the level of clinical variation between patient traces. 
  
 However, healthcare pathways generally have much higher levels of complexity than standard business processes, and unprocessed clinical data contains too many clinical variations for a clean and concise pathway model to be mined \cite{Huang2013, Veiga2010}.
 In order to reduce healthcare pathway variations to a meaningful pathway model, the pathway variants visualized by the plug-in \plugin{Explore Event Log} are examined closely to determine the most suitable processing methods. 
@@ -201,7 +201,7 @@ The ProM notations for pathway models are complex and optimal for detailed analy
 \subsection{Data Enrichment of Appendicitis Pathways}
 \label{sec:ML}
 The following section investigates the question if the pathway variants of the appendicitis case study are relevant exogenous variables for predicting the Length of Post-Operation Stay (LoPOS). 
-This is quite a challenging task, because the individual healing process is expected to depend on personal factors like e.g. age \cite{} as well as the individual severity of the appendicitis inflamation, which in general is unknown at this stage of the data analysis, but might be captured by proxis like Length of Surgery (LOS).
+This is quite a challenging task, because the individual healing process is expected to depend on personal factors like age \cite{polanczyk2001impact} as well as the individual severity of the appendicitis inflamation, which in general is unknown at this stage of the data analysis, but might be captured by proxis like Length of Surgery (LOS).
 
 For the purpose of this analysis, the patient's $LOPOS_i$, which is given as time interval between end of surgery and discharge, is converted into number of days after surgery. Therefore, a $LOPOS$ of one corresponds to a patient, who has been discharged the day after the surgery. However, we've found that 3 of the $N=448$ patient traces had a LOPOS of zero, because the surgery ended shortly after midnight and the patients were discharged on the same day. In order to simplify our analysis, the interpretation of LOPOS was broadend to /number of night rests/ after surgery, such that the LOPOS of these three patients could be casted to one.
 
