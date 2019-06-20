@@ -89,23 +89,45 @@ patient traces deviate from the model and investigate the reason for
 the discrepancy, e.g., clinicians following obsolete pathways or data errors.
 
 \subsection{Healthcare Pathway Data Enrichment}
-%\subsubsection{Healthcare Pathway Performance Evaluation}
+% \subsubsection{Healthcare Pathway Performance Evaluation}
+Data enrichment of healthcare pathways is the third phase of the
+discussed process mining pipeline (Fig.~\ref{fig:pipeline}).
+It comprises two steps: Healthcare pathway performance evaluation and
+healthcare pathway performance analysis.
+
 The main objectives of evaluating healthcare pathway performance are
-to understand the strengths and weaknesses of current pathway design,
+to understand the strengths and weaknesses of the current pathway design,
 and to identify potential methods of improvement. Possible indicators
 of healthcare pathway performance include waiting times of clinical
 activities, hospital length of stay, recovery time and readmission
-rates \cite{Rotter2008_pathways}. Most of these indicators can be calculated or estimated using standard clinical timestamps.
-
+rates \cite{Rotter2008_pathways}.
+Most of these indicators can be calculated or estimated using standard clinical timestamps.
 For surgical healthcare pathways, Postoperative Length of Stay (PLS)
 is one of the critical indicators for evaluating healthcare pathway
-performance \cite{Pearson2001_pathways}. PLS is analyzed based on pathway variants because patients that follow identical activity sequences are likely to have similar clinical diagnoses. 
-%One approach is to analyze length of stay at each step of the pathway variants (see section 3.3 for application example). 
-%This allows for potential rate-determining steps to be identified because the contributions of all clinical activities to total length of stay is clear.
+performance \cite{Pearson2001_pathways}.
 
-%\subsubsection{Healthcare Pathway Performance Analysis}
-Machine learning techniques are used to explore factors that influence healthcare pathway performance indicators. All information derived from the discovered healthcare pathways such as time-stamped clinical activities and patient demographics are all considered as explanatory variables to build regression models for performance indicators. Performance indicators such as LOPOS and patient re-admissions dependent on human decisions, so regression models should always focus on modelling the uncertainties involved. 
-Therefore, probabilistic machine learning models are important approaches for this purpose.  The aim is to investigate if certain clinical decisions, clinical processes, or demographics are predictors for  pathway performance, e.g. LOPOS.
+Analysing the performance of healthcare pathways with respect to
+pathway variants and other possible influencing factors like
+demographics or patient specific pathway characteristics, e.g. length
+of Surgery (LoS), is the final step of the process mining pipeline
+(Fig.~\ref{fig:pipeline}).
+Due to the fact, that most pathway performance indicators do not
+follow normal distributions, while exhibiting significant stochastic
+volatility, neither classical hypotheses tests \cite{Goodman2008_p-value}, nor point-predicting
+machine learning models are appropriate for analysing healthcare
+pathways.
+Instead, probabilistic machine learning models
+\cite{Ghahramani2015_PML} are used for extracting interpretable models
+from healtcare pathways (Sec.~\ref{sec:ML}).
+For this purpose, feature engineering \cite{DongLiu2018_FE} from
+the patients's pathway traces (e.g. LoS, pathway variant),
+demographics (e.g. age), as well as medical documentation like written
+diagnosis, time series, or images becomes important.
+In order to demonstrate this approach, the following case study
+discusses a probabilistic machine learning model for PLS, which
+takes into account pathway variants
+(Sec.~\ref{Sec:DiscoveryConformance}), as well as demographics, and
+LoS (Sec.~\ref{sec:ML}).
 
 \section{Case Study: Appendicitis Healthcare Pathways}
 This section discusses the healthcare pathway discovery process for an appendicitis case study. For this purpose, two years’ worth of data from 2015 to 2017 from 448 appendicitis patients have been analysed. 
@@ -240,7 +262,7 @@ Pr(PLS=k) = \text{Geom}(p) = (1-p)^{k-1}p^{k},
 which is parametrized by probability $p$ of being discharged at the $k^\text{th}$ day respectively $k$ night rests after surgery. 
 However, estimating $p$ as inverse mean of the observed PLS to 
 \begin{equation}
- \hat{p} = \frac{N}{\sum\limits_{i=1}^N PLS_i} \approx 0.618	
+ \hat{p} = \frac{N}{\sum\limits_{i=1}^N PLS_i} \approx 61.8\%	
 \end{equation}
 reveals that the average discharge probability $\hat{p}$ does not generalize well over the cohord, because the number of patients being discharged at the first day after surgery is underestimated and the number of patients being discharged at second and third day after surgery is overestimated (Fig.~\ref{fig:Geom}).
 
