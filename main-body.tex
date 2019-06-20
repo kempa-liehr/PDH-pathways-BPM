@@ -43,7 +43,9 @@ Healthcare pathway discovery is the first phase of the proposed process mining p
 The aim is to use patient healthcare records stored in hospitals’ information systems to design a concise pathway model that is easy for clinical interpretation. Therefore, clinical input is critical to the selection of appropriate processing methods. 
 
 %\subsubsection{Clinical Data Processing}
- A pathway variant is a unique activity sequence of a complete patient trace. The ProM plug-in \plugin{Explore Event Log} organizes patient traces into pathway variants, and the total number of pathway variants is an indicator of the level of clinical variation between patient traces. 
+ A pathway model is a set of pathway variants. Each pathway variant is
+ a unique activity sequence of a complete patient trace. The ProM
+ plug-in \plugin{Explore Event Log} extracts pathway variants from patient traces, and the total number of pathway variants is an indicator of the level of clinical variation between patient traces. 
  
 However, healthcare pathways generally have much higher levels of complexity than standard business processes, and unprocessed clinical data contains too many clinical variations for a clean and concise pathway model to be mined \cite{Huang2013, Veiga2010}.
 In order to reduce healthcare pathway variations to a meaningful pathway model, the pathway variants visualized by the plug-in \plugin{Explore Event Log} are examined closely to determine the most suitable processing methods. 
@@ -60,13 +62,36 @@ Clinical input is highly recommended at this step particularly for complex or un
 %\subsubsection{Pathway Visualization}
 
 \subsection{Healthcare Pathway Conformance Analysis}
-Conformance analysis evaluates the degree to which a healthcare pathway model captures movement of patient traces by comparing the discovered model to real clinical data. 
+Conformance analysis evaluates the degree to which a healthcare pathway model captures movement of patient traces by comparing the pathway model to real clinical data. 
 Accuracy of the discovered healthcare pathway model is validated if the majority of the patient traces conform to the model. Patient traces rarely all follow identical pathways, so the healthcare pathway model is not expected to capture all patient traces. The objective is to discover a healthcare pathway model that captures the fundamental structure of most patient traces. 
 
-ProM offers a plug-in known as \plugin{Inductive Visual Miner} that visualizes healthcare pathway models from input clinical data almost instantaneously. It is the primary process-mining tool used in this study to construct healthcare pathway models. Pathway models constructed by \plugin{Inductive Visual Miner} are in the form of process trees. A process tree is a hierarchical map comprised of decision nodes and `tasks' representing clinical activities \cite{25a7fd818bf44606a903d9b78b95cdd3}. Healthcare pathway models constructed by this plug-in allow for the identification of healthcare pathway branches throughout the process.
+ProM offers tools for conformance analysis of healthcare
+pathway models. Its plug-in \plugin{Inductive Visual Miner} compares
+patient traces from input clinical data to a healthcare pathway model
+and visualizes patient traces, which are deviating from the pathway
+model.
+For this purpose, the pathway model is visualized as process tree,
+which is a hierarchical map comprised of decision nodes and
+\textit{tasks} representing clinical activities
+\cite{25a7fd818bf44606a903d9b78b95cdd3}.
+Therefore, process trees enable the identification of pathway branches
+throughout the healthcare pathway model.
+
+If valid patient traces deviate from a healthcare pathway model, then
+adjustments are made to the model to improve patient conformance,
+e.g., if a new form of treatment has been introduced, but not yet
+included in the model.
+Conversely, if patient traces do not conform to a healthcare pathway model, then the conformance analysis can identify where these invalid patient traces deviate from the model and investigate the reason for the discrepancy, e.g., clinicians following obsolete pathways, data errors, etc.
+
+Iterating 
 
 
-ProM offers tools for conformance analysis of a discovered healthcare pathway model. Its plug-in \plugin{Inductive Visual Miner} compares patient traces from input clinical data to a healthcare pathway model and visualizes patient traces, which are deviating from the pathway model. If valid patient traces deviate from a healthcare pathway model, then adjustments are made to the model to improve patient conformance, e.g., if a new form of treatment has been introduced, but not yet included in the model. Conversely, if patient traces do not conform to a healthcare pathway model, then the conformance analysis can identify where these invalid patient traces deviate from the model and investigate the reason for the discrepancy, e.g., clinicians following obsolete pathways, data errors, etc.
+%ProM provides the plug-in \plugin{Inductive Visual Miner} that
+%visualizes healthcare pathway models from input clinical data almost instantaneously.
+%It is the primary process-mining tool used in this study to construct
+%healthcare pathway models.
+
+
 
 \subsection{Healthcare Pathway Data Enrichment}
 \subsubsection{Healthcare Pathway Performance Evaluation}
