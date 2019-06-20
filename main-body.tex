@@ -89,14 +89,21 @@ patient traces deviate from the model and investigate the reason for
 the discrepancy, e.g., clinicians following obsolete pathways or data errors.
 
 \subsection{Healthcare Pathway Data Enrichment}
-\subsubsection{Healthcare Pathway Performance Evaluation}
-The main objectives of evaluating healthcare pathway performance are to understand the strengths and weaknesses of current pathway design, and to identify potential methods of improvement. Possible indicators of healthcare pathway performance include waiting times of clinical activities, hospital length of stay, recovery time and readmission rates. Most of these indicators can be calculated or estimated using standard clinical timestamps.
+%\subsubsection{Healthcare Pathway Performance Evaluation}
+The main objectives of evaluating healthcare pathway performance are
+to understand the strengths and weaknesses of current pathway design,
+and to identify potential methods of improvement. Possible indicators
+of healthcare pathway performance include waiting times of clinical
+activities, hospital length of stay, recovery time and readmission
+rates \cite{Rotter2008_pathways}. Most of these indicators can be calculated or estimated using standard clinical timestamps.
 
-For surgical healthcare pathways, Length of Post-Operation Stay (LOPOS) is one of the critical indicators for evaluating healthcare pathway performance. Length of Post-Operation stays are analyzed based on pathway variants because patients that follow identical activity sequences are likely to have similar clinical diagnoses. 
+For surgical healthcare pathways, Postoperative Length of Stay (PLS)
+is one of the critical indicators for evaluating healthcare pathway
+performance \cite{Pearson2001_pathways}. PLS is analyzed based on pathway variants because patients that follow identical activity sequences are likely to have similar clinical diagnoses. 
 %One approach is to analyze length of stay at each step of the pathway variants (see section 3.3 for application example). 
 %This allows for potential rate-determining steps to be identified because the contributions of all clinical activities to total length of stay is clear.
 
-\subsubsection{Healthcare Pathway Performance Analysis}
+%\subsubsection{Healthcare Pathway Performance Analysis}
 Machine learning techniques are used to explore factors that influence healthcare pathway performance indicators. All information derived from the discovered healthcare pathways such as time-stamped clinical activities and patient demographics are all considered as explanatory variables to build regression models for performance indicators. Performance indicators such as LOPOS and patient re-admissions dependent on human decisions, so regression models should always focus on modelling the uncertainties involved. 
 Therefore, probabilistic machine learning models are important approaches for this purpose.  The aim is to investigate if certain clinical decisions, clinical processes, or demographics are predictors for  pathway performance, e.g. LOPOS.
 
@@ -221,19 +228,19 @@ The ProM notations for pathway models are complex and optimal for detailed analy
 
 \subsection{Data Enrichment of Appendicitis Pathways}
 \label{sec:ML}
-The following section investigates the question if the pathway variants of the appendicitis case study are relevant exogenous variables for predicting the Length of Post-Operation Stay (LoPOS). 
+The following section investigates the question if the pathway variants of the appendicitis case study are relevant exogenous variables for predicting PLS.
 This is quite a challenging task, because the individual healing process is expected to depend on personal factors like age \cite{polanczyk2001impact} as well as the individual severity of the appendicitis inflamation, which in general is unknown at this stage of the data analysis, but might be captured by proxis like Length of Surgery (LOS).
 
-For the purpose of this analysis, the patient's $LOPOS_i$, which is given as time interval between end of surgery and discharge, is converted into number of days after surgery. Therefore, a $LOPOS$ of one corresponds to a patient, who has been discharged the day after the surgery. However, we've found that 3 of the $N=448$ patient traces had a LOPOS of zero, because the surgery ended shortly after midnight and the patients were discharged on the same day. In order to simplify our analysis, the interpretation of LOPOS was broadend to /number of night rests/ after surgery, such that the LOPOS of these three patients could be casted to one.
+For the purpose of this analysis, the patient's $PLS_i$, which is given as time interval between end of surgery and discharge, is converted into number of days after surgery. Therefore, a $PLS$ of one corresponds to a patient, who has been discharged the day after the surgery. However, we've found that 3 of the $N=448$ patient traces had a PLS of zero, because the surgery ended shortly after midnight and the patients were discharged on the same day. In order to simplify our analysis, the interpretation of PLS was broadend to /number of night rests/ after surgery, such that the PLS of these three patients could be casted to one.
 
-Analysing the LOPOS of the 448 appendicitis patients reveals a histogram, which closely resembles a Geometric distribution
+Analysing the PLS of the 448 appendicitis patients reveals a histogram, which closely resembles a Geometric distribution
 \begin{equation}
-Pr(LOPOS=k) = \text{Geom}(p) = (1-p)^{k-1}p^{k},
+Pr(PLS=k) = \text{Geom}(p) = (1-p)^{k-1}p^{k},
 \end{equation}
 which is parametrized by probability $p$ of being discharged at the $k^\text{th}$ day respectively $k$ night rests after surgery. 
-However, estimating $p$ as inverse mean of the observed LOPOS to 
+However, estimating $p$ as inverse mean of the observed PLS to 
 \begin{equation}
- \hat{p} = \frac{N}{\sum\limits_{i=1}^N LOPOS_i} \approx 0.618	
+ \hat{p} = \frac{N}{\sum\limits_{i=1}^N PLS_i} \approx 0.618	
 \end{equation}
 reveals that the average discharge probability $\hat{p}$ does not generalize well over the cohord, because the number of patients being discharged at the first day after surgery is underestimated and the number of patients being discharged at second and third day after surgery is overestimated (Fig.~\ref{fig:Geom}).
 
@@ -258,10 +265,10 @@ V_{j,i} = \begin{cases}
 \end{cases}
 \end{equation}
 Therefore, the case $V_{0,i}=V_{1,i}=V_{2,i}=V_{3,i}=0$ corresponds to variants V4--V12 of Fig.~\ref{}.
-These models make the simplifying assumption that the individualised probability of discharge $Pr(LOPOS_i=k|x_i)$ can be estimated from the information $x_i$ being available at the end of surgery, when future treatment steps and therefore the complete pathway variant for the respective $i^\text{th}$ patient have been decided on:
+These models make the simplifying assumption that the individualised probability of discharge $Pr(PLS_i=k|x_i)$ can be estimated from the information $x_i$ being available at the end of surgery, when future treatment steps and therefore the complete pathway variant for the respective $i^\text{th}$ patient have been decided on:
 \begin{equation}
 \begin{split}
-Pr(LOPOS_i=k|x_i) & = \text{Geom}(p_i|x_i) \\
+Pr(PLS_i=k|x_i) & = \text{Geom}(p_i|x_i) \\
                   & = (1-p_i)^{k-1}p_i^{k} \\
           %        & = \left(1-\text{logistic}(f(x_i))\right)^{k-1}\text{logistic}(f(x_i))^{k} \\
           %        & = \left(1+e^{f(x_i)}\right) \left(2 + e^{-f(x_i)} + e^{f(x_i)}\right)^{-k}
