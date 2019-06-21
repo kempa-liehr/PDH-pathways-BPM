@@ -416,7 +416,27 @@ However, the uncertainty of discharge probabilities for V1 is significantly larg
 %\include{cholecystitis}
 
 \section{Conclusion}
-Healthcare pathways are critical for maintaining quality of care and improving health outcome for all patients, but there is no consensus on a healthcare pathway mining pipeline suitable for hospital implementation that supports pathway discovery from hospital health records. Business process modelling methods are used to design a process mining pipeline that produces concise and comprehensible healthcare pathway models from hospital records, and supports conformance analysis and enrichment of the discovered pathways. The proposed process mining pipeline successfully constructs concise pathway models for the appendicitis and cholecystitis case studies. The produced healthcare pathway models are easy for clinical interpretation and provide an unbiased overview of real patient traces through the treatment process. Preliminary analysis on building a machine learning model to predict post-operation length of stay, using information extracted by the process mining pipeline, is showing promising results. This means that the proposed mining pipeline has the potential to support the development of machine learning models to further relate healthcare pathways to performance indicators. This study has established the use of business process modelling methods for the improvement of healthcare pathway mining methods, and there is value in investigating the capabilities of other business process modelling tools for healthcare pathway mining purposes.
+Healthcare pathways are critical for maintaining quality of care and
+improving health outcome for all patients, but there is no consensus
+on a healthcare pathway mining pipeline suitable for hospital
+implementation that supports pathway discovery from hospital health
+records.
+Business process modelling methods are used to design a process mining
+pipeline that produces concise and comprehensible healthcare pathway
+models from hospital records, and supports conformance analysis and
+enrichment of the discovered pathways.
+The proposed process mining pipeline successfully constructs concise
+pathway models for the appendicitis and cholecystitis case studies.
+The produced healthcare pathway models are easy for clinical
+interpretation and provide an unbiased overview of real patient traces
+through the treatment process.
+Probabilistic machine learning models for predicting postoperative
+length of stay, using information extracted by the process mining
+pipeline, is showing promising results.
+This means that the proposed mining pipeline has the potential to
+support the development of machine learning models to further relate
+healthcare pathways to performance indicators.
+This study has established the use of business process modelling methods for the improvement of healthcare pathway mining methods, and there is value in investigating the capabilities of other business process modelling tools for healthcare pathway mining purposes.
 
 \begin{table}[h]
 \centering
@@ -431,7 +451,15 @@ Healthcare pathways are critical for maintaining quality of care and improving h
  What this study adds:
  \begin{itemize}
      \item  The use of business process modelling methods improves the automatic mapping of healthcare pathways from clinical data.
-     \item The application of business process modelling methods to healthcare pathway enables deviations from typical treatment pathways to be identified; and predictions for future treatment duration to be made, all using standard clinical data timestamps. 
+     \item The application of business process modelling methods to
+       healthcare pathway enables deviations from typical treatment
+       pathways to be identified; and predictions for future treatment
+       duration to be made, all using standard clinical data
+       timestamps.
+     \item Probabilistic machine learning models enable the prediction
+       of patient specific discharge probabilities, which lead to
+       patient specific postoperative
+       length of stay distributions.
  \end{itemize}
 \end{tabular}
 \end{table}
