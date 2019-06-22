@@ -396,7 +396,23 @@ The situation is more complicated for variants V0 and V1, because their coeffici
   potential scale reduction factor. A value of one indicates
   convergence.}
 \centering
-\input{DS19fk1_c0__model_B__coeff}
+\begin{tabular}{lrrrr}
+\hline
+\hline
+{} &      mean &    hpd\_2.5 &   hpd\_97.5 &      Rhat \\
+\hline
+Intercept  &  9.12 &   6.46 &  11.82 &  1.000029 \\
+LoS        & -0.71 &  -1.061 &  -0.372 &  0.999977 \\
+log\_age    & -1.787 &  -2.42 &  -1.127 &  1.000054 \\
+V0         & -8.06 & -12.54 &  -3.69 &  1.000141 \\
+V1         & -5.98 & -10.63 &  -1.098 &  1.000014 \\
+log\_age:V0 &  2.75 &   1.386 &   4.12 &  1.000162 \\
+log\_age:V1 &  1.870 &   0.427 &   3.30 &  1.000015 \\
+V2         &  1.266 &   0.645 &   1.887 &  1.000081 \\
+V3         &  0.762 &   0.1782 &   1.339 &  1.000103 \\
+\hline
+\hline
+\end{tabular}
 \end{table}
 
 
