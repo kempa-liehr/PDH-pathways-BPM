@@ -132,9 +132,7 @@ LOS (Sec.~\ref{sec:ML}).
 \section{Case Study: Appendicitis Healthcare Pathways}
 This section discusses the healthcare pathway discovery process for an
 appendicitis case study. For this purpose, two years’ worth of data
-from 2015 to 2017 from 415 appendicitis patients (201 female, 213
-male) %DS19fA0
-have been analysed. 
+from 2015 to 2017 from 448 appendicitis patients have been analysed. 
 A second case study on 52 cholecystitis patients is presented in \ref{sec:Cholecystitis}.
 The patients' traces from both case studies were collected from North Shore Hospital in Auckland, New Zealand.
 
@@ -285,16 +283,20 @@ This is quite a challenging task, because the individual healing process is expe
   \end{tabular}
     \caption{Modelling PLS as geometric distribution without patient
       specific model (a) and with individualised posterior (b) from
-      model Eq \eqref{modelB}.
+      model B (Eq \eqref{modelB}). Sampling from patient specific
+      posterior distributions replicates the observed PLS quite well.
       }
     \label{fig:Geom}
 \end{figure}
 
-For the purpose of this analysis, the patient's $PLS_i$, which is
+For the purpose of this analysis, patients' traces with complete
+demographic information (415 samples) are selected and
+the patients' $PLS$, which is
 given as time interval between end of surgery and discharge, is
 converted into the number of days after surgery. Therefore, a $PLS$ of
 one corresponds to a patient, who has been discharged the day after
-surgery. Three of the $N=415$ patient traces had a PLS of zero, because the surgery ended shortly after midnight and the patients were discharged on the same day. In order to simplify our analysis, the interpretation of PLS was broadend to /number of night rests/ after surgery, such that the PLS of these three patients could be casted to one.
+surgery. Three of the $N=415$  %DS19fA0
+patient traces had a PLS of zero, because the surgery ended shortly after midnight and the patients were discharged on the same day. In order to simplify our analysis, the interpretation of PLS was broadend to /number of night rests/ after surgery, such that the PLS of these three patients could be casted to one.
 
 Analysing the PLS of the 415 appendicitis patients reveals a
 histogram, which closely resembles a Geometric distribution (Fig.~\ref{fig:Geom}a)
@@ -341,10 +343,15 @@ V_{j,i} = \begin{cases}
 \end{cases}
 \end{equation}
 Therefore, the case $V_{0,i}=V_{1,i}=V_{2,i}=V_{3,i}=0$ corresponds to variants V4--V12 of Fig.~\ref{fig:appendicitis pathway variants}.
-These models make the simplifying assumption that the individualised probability of discharge $Pr(PLS_i=k|x_i)$ can be estimated from the information $x_i$ being available at the end of surgery, when future treatment steps and therefore the complete pathway variant for the respective $i^\text{th}$ patient have been decided on:
+Models A and B make the simplifying assumption that the individualised
+probability of discharge $Pr(PLS_i=k|x_i)$ can be estimated from 
+\begin{equation}
+x_i = (LOS_i, \text{log}(age_i), V_{0,i}, V_{1, i}, V_{2, i}, V_{3, i}).
+\end{equation}
+ being available at the end of surgery, when future treatment steps and therefore the complete pathway variant for the respective $i^\text{th}$ patient have been decided on:
 \begin{equation}
 \begin{split}
-Pr(PLS_i=k|x_i) & = \text{Geom}(p|x_i) \\
+Pr(PLS_i=k|x_i) & = \text{Geom}\left(p(x_i)\right) \\
 & = \left(1-p(x_i)\right)^{k-1}\left(p(x_i)\right)^{k} \\
 %& = \left(1-\mathbb{E}_{x_i}[p]\right)^{k-1}\left(\mathbb{E}_{x_i}[p]\right)^{k} \\
           %        & = \left(1-\text{logistic}(f(x_i))\right)^{k-1}\text{logistic}(f(x_i))^{k} \\
@@ -352,9 +359,7 @@ Pr(PLS_i=k|x_i) & = \text{Geom}(p|x_i) \\
 \end{split}
 \end{equation}
 with $p(x_i)$ being modelled either by Eqn. \eqref{modelA} or
-\eqref{modelB} and
-\[x_i = (LOS_i, \text{log}(age_i), V_{0,i}, V_{1, i}, V_{2, i}, V_{3, i}).
-  \] 
+\eqref{modelB}.
     
 The statistical model has been fitted using PyMC3
 \citep{Salvatier2016_PyMC3} version 0.24.2 using the No-U-Turn Sampler
