@@ -17,12 +17,12 @@ Past studies have shown that there is potential for informative healthcare pathw
     \end{itemize}
     \item Data enrichment
     \begin{itemize}
-        \item Investigate correlation between healthcare pathway and performance-determining factors (e.g., patient length-of-stay, readmission rate).
+        \item Investigate correlation between healthcare pathway and performance indicators (e.g., patient length-of-stay, readmission rate).
     \end{itemize}
 \end{enumerate}
 
 \section{Healthcare Pathway Mining Methodology}
-This chapter outlines the proposed process mining pipeline designed for mining healthcare pathways from hospital records using business process modelling tools. This study adopts the scientific computing practices recommended by Wilson et al. \cite{Wilson2014}, \cite{Wilson2017} to ensure that all results are reproducible. The proposed process mining pipeline consists of three major sections that correspond to each of the three main objectives (i.e. pathway discovery, conformance, and enrichment). An overview of the process mining pipeline designed for this study is shown in Fig.~\ref{fig:pipeline}. It comprises three phases, which are pathway discovery, conformance analysis, and data enrichment. The following sections elaborate these phases and their respective objectives.
+This chapter outlines the proposed process mining pipeline designed for mining healthcare pathways from hospital records using business process modelling tools. This study adopts the scientific computing practices recommended by Wilson et al. \cite{Wilson2014}, \cite{Wilson2017} to ensure that all results are reproducible. The proposed process mining pipeline consists of three major phases that correspond to each of the three main objectives (i.e. pathway discovery, conformance, and enrichment). An overview of the process mining pipeline designed for this study is shown in Fig.~\ref{fig:pipeline}.  The following sections elaborate the three phases of the proposed pipeline and their respective objectives.
 
 \begin{figure}[t]
 \centering
@@ -40,14 +40,10 @@ ProM is an open-source process mining software that is effective for constructio
 
 \subsection{Healthcare Pathway Discovery}
 Healthcare pathway discovery is the first phase of the proposed process mining pipeline. It consists of two steps: clinical data processing and pathway visualization, which are conducted iteratively until a concise model is produced.
-The aim is to use patient healthcare records stored in hospitals’ information systems to design a concise pathway model that is easy for clinical interpretation. Therefore, clinical input is critical to the selection of appropriate processing methods. 
-
-%\subsubsection{Clinical Data Processing}
- A pathway model is a set of pathway variants. Each pathway variant is
- a unique activity sequence of a complete patient trace. The ProM
- plug-in \plugin{Explore Event Log} extracts pathway variants from patient traces, and the total number of pathway variants is an indicator of the level of clinical variation between patient traces. 
+The aim is to use patient healthcare records stored in hospital information systems to design a concise pathway model that is easy for clinical interpretation. Therefore, clinical input is critical to the selection of appropriate processing methods. 
  
-However, healthcare pathways generally have much higher levels of complexity than standard business processes, and unprocessed clinical data contains too many clinical variations for a clean and concise pathway model to be mined \cite{Huang2013, Veiga2010}.
+Healthcare pathways generally have much higher levels of complexity than standard business processes, and unprocessed clinical data contains too many clinical variations for a clean and concise pathway model to be mined \cite{Huang2013, Veiga2010}. Each pathway variant is a unique activity sequence of a complete patient trace. The ProM plug-in \plugin{Explore Event Log} extracts pathway variants from patient traces, and the total number of pathway variants is an indicator of the level of clinical variation between patient traces.
+
 In order to reduce healthcare pathway variations to a meaningful pathway model, the pathway variants visualized by the plug-in \plugin{Explore Event Log} are examined closely to determine the most suitable processing methods. 
 There are three effective methods for reducing clinical variations without filtering patient traces:
 
@@ -68,9 +64,9 @@ Accuracy of the discovered healthcare pathway model is validated if the majority
 ProM offers tools for conformance analysis of healthcare
 pathway models: Its plug-in \plugin{Inductive Visual Miner} compares
 patient traces from input clinical data to a healthcare pathway model
-and indicates patient traces, which are deviating from the pathway
+and indicates patient traces which are deviating from the pathway
 model.
-For this purpose, the pathway model is visualized as process tree,
+For this purpose, the pathway model is visualized as a process tree,
 which is a hierarchical map comprised of decision nodes and
 tasks representing clinical activities
 \cite{25a7fd818bf44606a903d9b78b95cdd3}.
@@ -80,11 +76,10 @@ throughout the healthcare pathway model (c.f. Sec~\ref{Sec:DiscoveryConformance}
 If valid patient traces deviate from a healthcare pathway model, 
 adjustments are made to the model to improve patient conformance.
 A typical example might be the introduction of a new form of
-treatment, which has not been included into the model, yet.
+treatment, which has not been included into the model yet.
 Including these findings into the model leads to an iterative approach
 between pathway discovery and conformance analysis (Fig.~\ref{fig:pipeline}).
-Conversely, if patient traces do not conform to a healthcare pathway
-model, conformance analysis can identify where these invalid
+Conversely, conformance analysis can identify where invalid
 patient traces deviate from the model and investigate the reason for
 the discrepancy, e.g., clinicians following obsolete pathways or data errors.
 
@@ -99,12 +94,11 @@ The main objectives of evaluating healthcare pathway performance are
 to understand the strengths and weaknesses of the current pathway design,
 and to identify potential methods of improvement. Possible indicators
 of healthcare pathway performance include waiting times of clinical
-activities, hospital length of stay, recovery time and readmission
+activities, hospital length of stay, recovery time, and readmission
 rates \cite{Rotter2008_pathways}.
-Most of these indicators can be calculated or estimated using standard clinical timestamps.
-For surgical healthcare pathways, Postoperative Length of Stay (PLS)
-is one of the critical indicators for evaluating healthcare pathway
-performance \cite{Pearson2001_pathways}.
+Most of these indicators can be calculated or estimated using standard clinical timestamps. Postoperative Length of Stay (PLS), which is measured from end of surgery to discharge, can also be considered as patient recovery time.
+For surgical healthcare pathways,  PLS is one of the critical indicators for evaluating healthcare pathway
+performance \cite{Pearson2001_pathways}. 
 
 Analysing the performance of healthcare pathways with respect to
 pathway variants and other possible influencing factors like
@@ -132,15 +126,15 @@ LOS (Sec.~\ref{sec:ML}).
 \section{Case Study: Appendicitis Healthcare Pathways}
 This section discusses the healthcare pathway discovery process for an
 appendicitis case study. For this purpose, two years’ worth of data
-from 2015 to 2017 from 448 appendicitis patients have been analysed. 
+from 2015 to 2017 on 448 appendicitis patients have been analysed. 
 A second case study on 52 cholecystitis patients is presented in \ref{sec:Cholecystitis}.
-The patients' traces from both case studies were collected from North Shore Hospital in Auckland, New Zealand.
+The patient records for both case studies were collected from North Shore Hospital in Auckland, New Zealand.
 
 \subsection{Appendicitis Pathway Discovery and Conformance Analysis}
 \label{Sec:DiscoveryConformance}
 The appendicitis pathway model, which has been generated by ProM's
 plugin \plugin{Explore Event Log}, is shown in
-Fig.~\ref{fig:appendicitis pathway variants} in form of a pathway
+Fig.~\ref{fig:appendicitis pathway variants} in the form of a pathway
 variant plot.
 The pathway variants are extracted without activities related to medication (i.e. preoperative and postoperative cefuroxime/metronidazole) because the clinicians confirmed that antibiotics are usually taken while the patient is waiting for surgery or discharge. The duration of these activities are therefore highly variable and result in a high number of unique pathway variants.
 
@@ -152,7 +146,7 @@ The top four variants account for approximately 88\% of the patient
 traces (Tab.~\ref{table:appendicitis variant table}).
 All clinical activities are represented by a start event and a stop
 event.
-The activities are colour coded such that the same colour refers to the same clinical activity. The most frequent pathway variant (index 0) only consists of anesthesia and surgery, while the second most frequent variant (index 1) also includes preoperative X-ray.
+The activities are colour coded such that the same colour refers to the same clinical activity. The most common pathway variant (index 0) only consists of anesthesia and surgery, while the second most common variant (index 1) also includes preoperative X-ray.
 The pathway variant indices are used in Sec.~\ref{sec:ML} as one-hot
 encoded feature of the probabilistic machine learning model.
 
@@ -194,10 +188,8 @@ Percentage &  0.67\% &  0.45\% &  0.45\% &  0.45\% &  0.45\% &  0.45\% \\
 \end{tabular}
 \end{table}
 
-The result of the final conformance analysis by \plugin{Inductive
-  Visual Miner} is shown for the first stage of the appendicitis
-pathway model in Fig.~\ref{fig:ivm pathway model example}.
-Unlike the pathway variants, the appendicitis pathway model incorporates activities representing antibiotics. The model indicates that 42 patients perform ultrasound and 183 patients perform X-ray upon admission. 
+The first stage of the appendicitis pathway model visualized by \plugin{Inductive Visual Miner} is shown in Fig.~\ref{fig:ivm pathway model example}.
+Unlike the pathway variants, this appendicitis pathway model incorporates activities representing antibiotics. The model indicates that 42 patients perform ultrasound and 183 patients perform X-ray upon admission. 
 
 \begin{figure}[t]
 \includegraphics[width=\textwidth]{images/ivm_appendicitis_first_stage_example.png}
@@ -230,7 +222,7 @@ corresponds to the process tree shown in Fig.~\ref{fig:ivm pathway
 This is the final pathway model that has been compiled based on
 clinical input to account for valid patient deviations, and all
 patient traces conform to the updated pathway.
-The most frequent pathway variant (index 0) shown in Fig.~\ref{fig:appendicitis pathway variants} corresponds to the horizontal path from start to finish in Fig.~\ref{fig:appendicitis pathway model}.
+The most common pathway variant (index 0) shown in Fig.~\ref{fig:appendicitis pathway variants} corresponds to the horizontal path from start to finish in Fig.~\ref{fig:appendicitis pathway model}.
 
 \begin{table}[t]
 \centering
@@ -268,7 +260,7 @@ The most frequent pathway variant (index 0) shown in Fig.~\ref{fig:appendicitis 
 
 \subsection{Data Enrichment of Appendicitis Pathways}
 \label{sec:ML}
-The following section investigates the question if the pathway
+The following section investigates the question of whether the pathway
 variants of the appendicitis case study are relevant features or
 covariates for explaining the stochastic volatility of PLS (Fig.~\ref{fig:Geom}a).
 This is quite a challenging task, because the individual healing process is expected to depend on personal factors like age \cite{polanczyk2001impact} as well as the individual severity of the appendicitis inflamation, which in general is unknown at this stage of the data analysis, but might be captured by proxis like Length of Surgery (LOS).
@@ -292,27 +284,27 @@ This is quite a challenging task, because the individual healing process is expe
 For the purpose of this analysis, patients' traces with complete
 demographic information (415 samples) are selected and
 the patients' $PLS$, which is
-given as time interval between end of surgery and discharge, is
+calculated as the time interval between end of surgery and discharge, is
 converted into the number of days after surgery. Therefore, a $PLS$ of
-one corresponds to a patient, who has been discharged the day after
+one corresponds to a patient who has been discharged the day after
 surgery. Three of the $N=415$  %DS19fA0
-patient traces had a PLS of zero, because the surgery ended shortly after midnight and the patients were discharged on the same day. In order to simplify our analysis, the interpretation of PLS was broadend to /number of night rests/ after surgery, such that the PLS of these three patients could be casted to one.
+patient traces had a PLS of zero, because the surgery ended shortly after midnight and the patients were discharged on the same day. In order to simplify our analysis, the interpretation of PLS was broadend to the number of night rests after surgery, such that the PLS of these three patients could be casted to one.
 
 Analysing the PLS of the 415 appendicitis patients reveals a
-histogram, which closely resembles a Geometric distribution (Fig.~\ref{fig:Geom}a)
+histogram which closely resembles a Geometric distribution (Fig.~\ref{fig:Geom}a)
 \begin{equation}
 Pr(PLS=k) = \text{Geom}(k; p) = (1-p)^{k-1}p^{k},
 \end{equation}
-which is parametrized by probability $p$ of being discharged at the $k^\text{th}$ day respectively $k$ night rests after surgery. 
+parametrized by probability $p$ of being discharged on the $k^\text{th}$ day, respectively $k$ nights of rest after surgery. 
 However, estimating $p$ as inverse mean of the observed PLS to 
 \begin{equation}
  \hat{p} = \frac{N}{\sum\limits_{i=1}^N PLS_i} \approx 61.8\%	
 \end{equation}
 reveals that the average discharge probability $\hat{p}$ does not
-generalize well over the cohord (Fig.~\ref{fig:Geom}a), because the number of patients being discharged at the first day after surgery is underestimated and the number of patients being discharged at second and third day after surgery is overestimated.
+generalize well over the cohord (Fig.~\ref{fig:Geom}a), because the number of patients being discharged on the first day after surgery is underestimated and the number of patients being discharged on the second and third day after surgery is overestimated.
 
 
-For the following probabilistic machine learning models, the individualized discharge probability $p_i$ is modelled as generalized linear model (GLM) using the inverse logistic function (logit) as link function and the geometric distribution for generating the likelihood. 
+For the following probabilistic machine learning models, the individualized discharge probability $p_i$ is modelled as a generalized linear model (GLM) using the inverse logistic function (logit) as a link function and the geometric distribution for generating the likelihood. 
 For the following analysis, we are comparing two different models of
 discharge probability $p_i$ as
 \begin{equation}\label{modelA}
@@ -332,8 +324,8 @@ which we refer to as \textit{model A}, and
 \end{equation}
 which we refer to as \textit{model B}.
 These two models have been selected because they were the most
-credible ones based on the widely applicable information criterion
-(WAIC) and leave-one-out cross-validation (LOO)  statistics
+credible based on the widely applicable information criterion
+(WAIC) and leave-one-out cross-validation (LOO) statistics
 \cite{Vehtari2017_WAIC_LOO}.
 The explanatory variables $V_{j,i}$ are categorical with 
 \begin{equation}
@@ -376,7 +368,7 @@ Therefore, we have decided to focus the following analysis of the
 fitted model on Eq.~\ref{modelB} for which all credible intervals
 exclude zero (Fig.~\ref{fig:forest_plots}b).
 However, this does not change the overall trend depicted in Fig.~\ref{fig:posterior}.
-It is important to note that both the coefficients of $LOS$ and $\text{log}(age)$ are negative. This means that for the base model of variants V4--V12 as well as variants V2 and V3 the probability of discharge decreases with increasing LOS and age. 
+It is important to note that both the coefficients of $LOS$ and $\text{log}(age)$ are negative. This means that for the base model of variants V4--V12 as well as variants V2 and V3, the probability of discharge decreases with increasing LOS and age. 
 Compared to the base model, Variants V2 and V3 have a higher discharge propability because both coefficients are positive. 
 The situation is more complicated for variants V0 and V1, because their coefficients are negative but the coefficients of their interaction terms with $\text{log}(age)$ are positive, which basically counterbalances the effect of $\text{log}(age)$.
 
@@ -434,10 +426,9 @@ V3         &  0.762 &   0.1782 &   1.339 &  1.000103 \\
 
 This is visualized in Fig.~\ref{fig:posterior}, which shows the posterior distributions of discharge probability $p_i$ as function of LOS (Fig.~\ref{fig:posterior}(a)) and age (Fig.~\ref{fig:posterior}(c)). While the discharge probability decreases with increasing LOS for all pathway variants (Fig.~\ref{fig:posterior}(b)), the effect is different for age. 
 The discharge probability $p_i$ decreases for Variants V2, V3, and V4-V12 with increasing age of the patients, while its expectation value is constant for $V1$ and even increases by nearly 10\% for V0. Note, that the corresponding graphics for model A \eqref{modelA}, which are not shown here, resemble nearly the same correlations. 
-From the clinical perspective, the difference of effects of age with
+From the clinical perspective, the difference in effects of age with
 respect to the pathway variants might be related to the fact that the
-most often pathway variants V0 and V1 are predominatnly found for
-younger patients (Fig.~\ref{Fig:boxplot}) and possibly older aged patients, for whom no complications are expected. 
+most common pathway variants V0 and V1 are predominatnly followed by younger patients (Fig.~\ref{Fig:boxplot}) and possibly older patients, for whom no complications are expected. 
 However, the uncertainty of discharge probabilities for V1 is significantly larger compared to V0.
 
 \begin{figure}
@@ -487,8 +478,7 @@ This study has established the use of business process modelling methods for the
      \item  The use of business process modelling methods improves the automatic mapping of healthcare pathways from clinical data.
      \item The application of business process modelling methods to
        healthcare pathway enables deviations from typical treatment
-       pathways to be identified; and predictions for future treatment
-       duration to be made, all using standard clinical data
+       pathways to be identified, all using standard clinical data
        timestamps.
      \item Probabilistic machine learning models enable the prediction
        of patient specific discharge probabilities, which lead to
