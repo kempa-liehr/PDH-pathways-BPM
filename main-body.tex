@@ -102,8 +102,7 @@ performance \cite{Pearson2001_pathways}.
 
 Analysing the performance of healthcare pathways with respect to
 pathway variants and other possible influencing factors like
-demographics or patient specific pathway characteristics, e.g. length
-of Surgery (LOS), is the final step of the process mining pipeline
+demographics or patient specific pathway characteristics, e.g. surgery duration (SD), is the final step of the process mining pipeline
 (Fig.~\ref{fig:pipeline}).
 Due to the fact, that most pathway performance indicators do not
 follow normal distributions, while exhibiting significant stochastic
@@ -114,14 +113,14 @@ Instead, probabilistic machine learning models
 \cite{Ghahramani2015_PML} are used for extracting interpretable models
 from healtcare pathways (Sec.~\ref{sec:ML}).
 For this purpose, feature engineering \cite{DongLiu2018_FE} from
-the patients's pathway traces (e.g. LOS, pathway variant),
+the patients's pathway traces (e.g. SD, pathway variant),
 demographics (e.g. age), as well as medical documentation like written
 diagnosis, time series, or images becomes important.
 In order to demonstrate this approach, the following case study
 discusses a probabilistic machine learning model for PLS, which
 takes into account pathway variants
 (Sec.~\ref{Sec:DiscoveryConformance}), as well as demographics, and
-LOS (Sec.~\ref{sec:ML}).
+SD (Sec.~\ref{sec:ML}).
 
 \section{Case Study: Appendicitis Healthcare Pathways}
 This section discusses the healthcare pathway discovery process for an
@@ -129,6 +128,7 @@ appendicitis case study. For this purpose, two years’ worth of data
 from 2015 to 2017 on 448 appendicitis patients have been analysed. 
 A second case study on 52 cholecystitis patients is presented in \ref{sec:Cholecystitis}.
 The patient records for both case studies were collected from North Shore Hospital in Auckland, New Zealand.
+The data were de-identified and an ethics approval for this research was obtained.
 
 \subsection{Appendicitis Pathway Discovery and Conformance Analysis}
 \label{Sec:DiscoveryConformance}
@@ -264,7 +264,7 @@ The most common pathway variant (index 0) shown in Fig.~\ref{fig:appendicitis pa
 The following section investigates the question of whether the pathway
 variants of the appendicitis case study are relevant features or
 covariates for explaining the stochastic volatility of PLS (Fig.~\ref{fig:Geom}a).
-This is quite a challenging task, because the individual healing process is expected to depend on personal factors like age \cite{polanczyk2001impact} as well as the individual severity of the appendicitis inflamation, which in general is unknown at this stage of the data analysis, but might be captured by proxis like Length of Surgery (LOS).
+This is quite a challenging task, because the individual healing process is expected to depend on personal factors like age \cite{polanczyk2001impact} as well as the individual severity of the appendicitis inflamation, which in general is unknown at this stage of the data analysis, but might be captured by proxies like surgery duration (SD).
 
 \begin{figure}
   \centering
@@ -302,7 +302,7 @@ However, estimating $p$ as inverse mean of the observed PLS to
  \hat{p} = \frac{N}{\sum\limits_{i=1}^N PLS_i} \approx 61.8\%	
 \end{equation}
 reveals that the average discharge probability $\hat{p}$ does not
-generalize well over the cohord (Fig.~\ref{fig:Geom}a), because the number of patients being discharged on the first day after surgery is underestimated and the number of patients being discharged on the second and third day after surgery is overestimated.
+generalize well over the cohort (Fig.~\ref{fig:Geom}a), because the number of patients being discharged on the first day after surgery is underestimated and the number of patients being discharged on the second and third day after surgery is overestimated.
 
 
 For the following probabilistic machine learning models, the individualized discharge probability $p_i$ is modelled as a generalized linear model (GLM) using the inverse logistic function (logit) as a link function and the geometric distribution for generating the likelihood. 
@@ -310,7 +310,7 @@ For the following analysis, we are comparing two different models of
 discharge probability $p_i$ as
 \begin{equation}\label{modelA}
   \begin{split}
-  \text{logit}(p_i) \sim & \;LOS_i + \text{log}(age_i) + 
+  \text{logit}(p_i) \sim & \;SD_i + \text{log}(age_i) + 
                             V_{0,i} + V_{1,i} + V_{2,i} + V_{3,i} + V_{0,i}\times\text{log}(age_i) +\\
   &   V_{1,i}\times\text{log}(age_i) + V_{2,i}\times\text{log}(age_i) + V_{3,i}\times\text{log}(age_i),\\
   \end{split}
@@ -318,7 +318,7 @@ discharge probability $p_i$ as
 which we refer to as \textit{model A}, and
 \begin{equation}\label{modelB}
   \begin{split}
-  \text{logit}(p_i) \sim & \;LOS_i + \text{log}(age_i) +
+  \text{logit}(p_i) \sim & \;SD_i + \text{log}(age_i) +
                                                          V_{0,i} + V_{1,i} + V_{2,i} + V_{3,i} + V_{0,i}\times\text{log}(age_i) +\\
   &    V_{1,i}\times\text{log}(age_i),\\
   \end{split}
@@ -339,7 +339,7 @@ Therefore, the case $V_{0,i}=V_{1,i}=V_{2,i}=V_{3,i}=0$ corresponds to variants 
 Models A and B make the simplifying assumption that the individualised
 probability of discharge $Pr(PLS_i=k|x_i)$ can be estimated from 
 \begin{equation}
-x_i = (LOS_i, \text{log}(age_i), V_{0,i}, V_{1, i}, V_{2, i}, V_{3, i}).
+x_i = (SD_i, \text{log}(age_i), V_{0,i}, V_{1, i}, V_{2, i}, V_{3, i}).
 \end{equation}
  being available at the end of surgery, when future treatment steps and therefore the complete pathway variant for the respective $i^\text{th}$ patient have been decided on:
 \begin{equation}
@@ -369,7 +369,7 @@ Therefore, we have decided to focus the following analysis of the
 fitted model on Eq.~\ref{modelB} for which all credible intervals
 exclude zero (Fig.~\ref{fig:forest_plots}b).
 However, this does not change the overall trend depicted in Fig.~\ref{fig:posterior}.
-It is important to note that both the coefficients of $LOS$ and $\text{log}(age)$ are negative. This means that for the base model of variants V4--V12 as well as variants V2 and V3, the probability of discharge decreases with increasing LOS and age. 
+It is important to note that both the coefficients of $SD$ and $\text{log}(age)$ are negative. This means that for the base model of variants V4--V12 as well as variants V2 and V3, the probability of discharge decreases with increasing SD and age. 
 Compared to the base model, Variants V2 and V3 have a higher discharge propability because both coefficients are positive. 
 The situation is more complicated for variants V0 and V1, because their coefficients are negative but the coefficients of their interaction terms with $\text{log}(age)$ are positive, which basically counterbalances the effect of $\text{log}(age)$.
 
@@ -394,15 +394,15 @@ The situation is more complicated for variants V0 and V1, because their coeffici
 \hline
 {} &      mean &    hpd\_2.5 &   hpd\_97.5 &      Rhat \\
 \hline
-Intercept  &  9.12 &   6.46 &  11.82 &  1.000029 \\
-LoS        & -0.71 &  -1.061 &  -0.372 &  0.999977 \\
-log\_age    & -1.787 &  -2.42 &  -1.127 &  1.000054 \\
-V0         & -8.06 & -12.54 &  -3.69 &  1.000141 \\
-V1         & -5.98 & -10.63 &  -1.098 &  1.000014 \\
-log\_age:V0 &  2.75 &   1.386 &   4.12 &  1.000162 \\
-log\_age:V1 &  1.870 &   0.427 &   3.30 &  1.000015 \\
-V2         &  1.266 &   0.645 &   1.887 &  1.000081 \\
-V3         &  0.762 &   0.1782 &   1.339 &  1.000103 \\
+Intercept  &  9.09 &   6.48 &  11.85 &  0.999988 \\
+SD        & -0.71 &  -1.059 &  -0.371 &  0.999987 \\
+log\_age    & -1.781 &  -2.46 &  -1.154 &  0.999988 \\
+V0         & -8.04 & -12.56 &  -3.70 &  0.999980 \\
+V1         & -5.95 & -10.82 &  -1.186 &  1.000013 \\
+log\_age:V0 &  2.75 &   1.365 &   4.12 &  0.999980 \\
+log\_age:V1 &  1.864 &   0.423 &   3.32 &  1.000013 \\
+V2         &  1.267 &   0.646 &   1.901 &  1.000062 \\
+V3         &  0.766 &   0.199 &   1.363 &  1.000046 \\
 \hline
 \hline
 \end{tabular}
@@ -421,11 +421,11 @@ V3         &  0.762 &   0.1782 &   1.339 &  1.000103 \\
 \end{tabular}
     \caption{Posterior distributions and corresponding means for
       different pathway variants of model B \eqref{modelB}. Trends with respect to
-      LOS and age are similar for model A \eqref{modelB}.}
+      SD and age are similar for model A \eqref{modelB}.}
     \label{fig:posterior}
 \end{figure}
 
-This is visualized in Fig.~\ref{fig:posterior}, which shows the posterior distributions of discharge probability $p_i$ as function of LOS (Fig.~\ref{fig:posterior}(a)) and age (Fig.~\ref{fig:posterior}(c)). While the discharge probability decreases with increasing LOS for all pathway variants (Fig.~\ref{fig:posterior}(b)), the effect is different for age. 
+This is visualized in Fig.~\ref{fig:posterior}, which shows the posterior distributions of discharge probability $p_i$ as function of SD (Fig.~\ref{fig:posterior}(a)) and age (Fig.~\ref{fig:posterior}(c)). While the discharge probability decreases with increasing SD for all pathway variants (Fig.~\ref{fig:posterior}(b)), the effect is different for age. 
 The discharge probability $p_i$ decreases for Variants V2, V3, and V4-V12 with increasing age of the patients, while its expectation value is constant for $V1$ and even increases by nearly 10\% for V0. Note, that the corresponding graphics for model A \eqref{modelA}, which are not shown here, resemble nearly the same correlations. 
 From the clinical perspective, the difference in effects of age with
 respect to the pathway variants might be related to the fact that the

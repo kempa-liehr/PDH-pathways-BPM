@@ -56,7 +56,8 @@
 \newcommand{\plugin}[1]{\texttt{#1}}
 \begin{frontmatter}
 
-\title{Healthcare Pathway Discovery, Conformance, and Enrichment \wordcount{main-body}{3000}}
+\title{Healthcare Pathway Discovery, Conformance, and Enrichment}
+% \wordcount{main-body}{3000}
 
 %% Group authors per affiliation:
 %\author{Michael O’Sullivan,  Andreas W. Kempa-Liehr, Christina Lin\fnref{myfootnote}, Randall Britten, Delwyn Armstrong}
@@ -65,17 +66,19 @@
 
 %% or include affiliations in footnotes:
 \author[mymainaddress]{Christina Lin}
-\ead{clin364@aucklanduni.ac.nz}
 \author[mymainaddress]{Andreas W. Kempa-Liehr\corref{mycorrespondingauthor}}
 \cortext[mycorrespondingauthor]{Corresponding author}
-\author[Orion]{Randall Britten}
+\ead{a.kempa-liehr@auckland.ac.nz}
+\author[ADHB,Orion]{Randall Britten}
 \author[Waitemata]{Delwyn Armstrong}
 \author[Waitemata]{Jonathan Wallace}
 %\author[Waitemata]{Patrick Gladding}
-\author[mymainaddress]{ Michael O'Sullivan}
+\author[mymainaddress]{Michael O'Sullivan}
 
 \address[mymainaddress]{Department of Engineering Science, The University of Auckland, 70 Symonds St, Auckland, New Zealand}
-\address[Orion]{Orion Health, 181 Grafton Rd, Auckland, New Zealand}
+\address[ADHB]{Auckland District Health Board, 2 Park Road, Auckland, New Zealand}
+\address[Orion]{was at Orion Health, 181 Grafton Rd, Auckland, New Zealand}
+
 \address[Waitemata]{Waitemata District Health Board, 124 Shakespeare Rd, Auckland, New Zealand
 }
 
@@ -111,7 +114,13 @@ Healthcare pathway; Process mining; Electronic health record; Probabilistic prog
 \input{main-body}
 
 \section*{Author Contributions}
-All authors have made substantial contribution to this study and approved the final manuscript.
+CL performed data analysis and processing using ProM, and created the new pathway visualisation method.
+AKL developed the probabilistic machine learning component of the work.
+MS and RB contributed during the conceptualisation of the project. MS, RB and AKL contributed  high level steering and guidance during the pathways discovery phase of the work.
+DA assisted with data acquisition and understanding the context of the data.
+JW provided guidance on clinical subject matter.
+MS provided overall leadership of the project.
+All authors approved the final manuscript.
 
 \section*{Acknowledgements}
 This research has been funded by the Precision Driven Health research partnership (project number 1209).
