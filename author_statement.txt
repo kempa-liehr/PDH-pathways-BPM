@@ -1,0 +1,8 @@
+CL performed data analysis and processing using ProM, and created the new pathway visualisation method.
+AKL developed the probabilistic machine learning component of the work.
+MS and RB contributed during the conceptualisation of the project.
+MS, RB and AKL contributed  high level steering and guidance during the pathways discovery phase of the work.
+DA assisted with data acquisition and understanding the context of the data.
+JW provided guidance on clinical subject matter.
+MS provided overall leadership of the project.
+All authors approved the final manuscript.
