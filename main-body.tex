@@ -22,7 +22,7 @@ Past studies have shown that there is potential for informative healthcare pathw
 \end{enumerate}
 
 \section{Healthcare Pathway Mining Methodology}
-This chapter outlines the proposed process mining pipeline designed for mining healthcare pathways from hospital records using business process modelling tools. This study adopts the scientific computing practices recommended by Wilson et al. \cite{Wilson2014}, \cite{Wilson2017} to ensure that all results are reproducible. The proposed process mining pipeline consists of three major phases that correspond to each of the three main objectives (i.e. pathway discovery, conformance, and enrichment). An overview of the process mining pipeline designed for this study is shown in Fig.~\ref{fig:pipeline}.  The following sections elaborate the three phases of the proposed pipeline and their respective objectives.
+This section outlines the proposed process mining pipeline designed for mining healthcare pathways from hospital records using business process modelling tools. This study adopts the scientific computing practices recommended by Wilson et al. \cite{Wilson2014}, \cite{Wilson2017} to ensure that all results are reproducible. The proposed process mining pipeline consists of three major phases that correspond to each of the three main objectives (i.e. pathway discovery, conformance, and enrichment). An overview of the process mining pipeline designed for this study is shown in Fig.~\ref{fig:pipeline}.  The following sections elaborate the three phases of the proposed pipeline and their respective objectives.
 
 \begin{figure}[t]
 \centering
@@ -42,7 +42,15 @@ ProM is an open-source process mining software that is effective for constructio
 Healthcare pathway discovery is the first phase of the proposed process mining pipeline. It consists of two steps: clinical data processing and pathway visualization, which are conducted iteratively until a concise model is produced.
 The aim is to use patient healthcare records stored in hospital information systems to design a concise pathway model that is easy for clinical interpretation. Therefore, clinical input is critical to the selection of appropriate processing methods. 
  
-Healthcare pathways generally have much higher levels of complexity than standard business processes, and unprocessed clinical data contains too many clinical variations for a clean and concise pathway model to be mined \cite{Huang2013, Veiga2010}. Each pathway variant is a unique activity sequence of a complete patient trace. The ProM plug-in \plugin{Explore Event Log} extracts pathway variants from patient traces, and the total number of pathway variants is an indicator of the level of clinical variation between patient traces.
+Healthcare pathways generally have much higher levels of complexity than standard business processes, and unprocessed clinical data contains too many clinical variations for a clean and concise pathway model to be mined \cite{Huang2013, Veiga2010}. Each pathway variant is a unique event sequence of a complete patient trace. The ProM plug-in \plugin{Explore Event Log} extracts pathway variants from patient traces, and the total number of pathway variants is an indicator of the level of clinical variation between patient traces. The basic format of an example pathway variant extracted by \plugin{Explore Event Log} is demonstrated in  Fig.~\ref{fig:example pathway variant}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{images/example_pathway_variant_format2.jpg}
+\caption{Basic format of example pathway variant visualized by ProM's
+  plugin \plugin{Explore Event Log}. The same colour represents the same activity, and each activity is composed of a start event and a stop event.}
+\label{fig:example pathway variant}
+\end{figure}
 
 In order to reduce healthcare pathway variations to a meaningful pathway model, the pathway variants visualized by the plug-in \plugin{Explore Event Log} are examined closely to determine the most suitable processing methods. 
 There are three effective methods for reducing clinical variations without filtering patient traces:
@@ -71,7 +79,7 @@ which is a hierarchical map comprised of decision nodes and
 tasks representing clinical activities
 \cite{25a7fd818bf44606a903d9b78b95cdd3}.
 Therefore, process trees enable the identification of pathway branches
-throughout the healthcare pathway model (c.f. Sec~\ref{Sec:DiscoveryConformance}).
+throughout the healthcare pathway model (c.f. Sec~\ref{Sec:AppendicitisDiscoveryConformance}).
 
 If valid patient traces deviate from a healthcare pathway model, 
 adjustments are made to the model to improve patient conformance.
@@ -96,7 +104,7 @@ and to identify potential methods of improvement. Possible indicators
 of healthcare pathway performance include waiting times of clinical
 activities, hospital length of stay, recovery time, and readmission
 rates \cite{Rotter2008_pathways}.
-Most of these indicators can be calculated or estimated using standard clinical timestamps. Postoperative Length of Stay (PLS), which is measured from end of surgery to discharge, can also be considered as patient recovery time.
+Most of these indicators can be calculated or estimated using standard clinical timestamps. Postoperative Length of Stay (PLS), which is measured from leaving operating theatre to discharge, can also be considered as patient recovery time.
 For surgical healthcare pathways,  PLS is one of the critical indicators for evaluating healthcare pathway
 performance \cite{Pearson2001_pathways}. 
 
@@ -115,23 +123,43 @@ from healtcare pathways (Sec.~\ref{sec:ML}).
 For this purpose, feature engineering \cite{DongLiu2018_FE} from
 the patients's pathway traces (e.g. SD, pathway variant),
 demographics (e.g. age), as well as medical documentation like written
-diagnosis, time series, or images becomes important.
+diagnosis, time series, or images become important.
 In order to demonstrate this approach, the following case study
 discusses a probabilistic machine learning model for PLS, which
 takes into account pathway variants
-(Sec.~\ref{Sec:DiscoveryConformance}), as well as demographics, and
+(Sec.~\ref{Sec:AppendicitisDiscoveryConformance}), as well as demographics, and
 SD (Sec.~\ref{sec:ML}).
 
-\section{Case Study: Appendicitis Healthcare Pathways}
-This section discusses the healthcare pathway discovery process for an
-appendicitis case study. For this purpose, two years’ worth of data
-from 2015 to 2017 on 448 appendicitis patients have been analysed. 
-A second case study on 52 cholecystitis patients is presented in \ref{sec:Cholecystitis}.
+\section{Case Study: Appendicitis and Cholecystitis Healthcare Pathways}
+This section discusses the healthcare pathway discovery process for the appendicitis and cholecystitis case studies. For this purpose, two years’ worth of data
+from 2015 to 2017 on 448 appendicitis patients and 52 cholecystitis patients have been analysed. 
+
+\subsection{Data Description}
+\label{Sec:DataDescription}
 The patient records for both case studies were collected from North Shore Hospital in Auckland, New Zealand.
 The data were de-identified and an ethics approval for this research was obtained.
 
+\newcommand{\tabitem}{~~\llap{\textbullet}~~}
+
+\begin{table}[t]
+\centering
+\caption{Description of all data sets collected from North Shore Hospital for the appendicitis and cholecystitis case studies.}
+\label{table:data description table}
+\begin{tabular}{lll}
+  \hline
+  \hline
+Hospital Data set  &     Columns of Interest & Data Type  \\
+\hline
+Acute Theatre   &    \tabitem Theatre Encounter & String\\  &\tabitem Surgery Start Time\\  &\tabitem Surgery End Time\\  &\tabitem Into Theatre Time\\  &\tabitem Out of Theatre Time\\
+  \hline
+General Surgery   &    \tabitem Theatre Encounter\\
+  \hline
+  \hline
+\end{tabular}
+\end{table}
+
 \subsection{Appendicitis Pathway Discovery and Conformance Analysis}
-\label{Sec:DiscoveryConformance}
+\label{Sec:AppendicitisDiscoveryConformance}
 The appendicitis pathway model, which has been generated by ProM's
 plugin \plugin{Explore Event Log}, is shown in
 Fig.~\ref{fig:appendicitis pathway variants} in the form of a pathway
@@ -231,6 +259,7 @@ The most common pathway variant (index 0) shown in Fig.~\ref{fig:appendicitis pa
 \label{table:notation table}
 \begin{tabular}{ l c l }
  \hline
+ \hline
  Notation & Symbol & Definition \\ 
  \hline
  Orange Diamond 
@@ -254,17 +283,87 @@ The most common pathway variant (index 0) shown in Fig.~\ref{fig:appendicitis pa
  \raisebox{-3pt}{\includegraphics[width=0.5cm]{images/finish_node.png}} 
  & Finishing Point \\
  \hline
+ \hline
 \end{tabular}
 \end{table}
 
-%\include{appendicitis_length_of_stay}
+\subsection{Length of Stays of Appendicitis Pathway Variants}
+Length of stays in hospital are analyzed based on the 13 identified appendicitis pathway variants shown in Fig.~\ref{fig:appendicitis pathway variants}. Hospital length of stay, measured from admission to discharge, for each of the 13 appendicitis pathway variants are shown in Fig.~\ref{fig:hospital length of stay appendicitis}. Postoperative length of stay, measured from leaving theatre to discharge, for each pathway variant is shown in Fig.~\ref{fig:post op length of stay appendicitis}. Pathway variant 9 has the longest length of stay for both measures. Pathway variants 5, 7 and 11 also have relatively long length of stays. Out of these four pathway variants, only pathway variant 7 consists of no postoperative activities. Probabilistic machine learning models are used to further investigate factors influencing postoperative length of stay (Sec.~\ref{sec:ML}).
 
-\subsection{Data Enrichment of Appendicitis Pathways}
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{images/hospital_length_of_stay_appendicitis_210518.jpeg}
+\caption{Hospital length of stay of the 13 appendicitis pathway variants, measured from admission to discharge.}
+\label{fig:hospital length of stay appendicitis}
+\includegraphics[width=\textwidth]{images/postoperative_length_of_stay_appendicitis.jpeg}
+\caption{Postoperative length of stay of the 13 appendicitis pathway variants, measured from leaving theatre to discharge.}
+\label{fig:post op length of stay appendicitis}
+\end{figure}
+
+\subsection{Cholecystitis Pathway Discovery and Conformance Analysis}
+\label{Sec:CholecystitisDiscoveryConformance}
+This section shows the cholecystitis pathway variant plot auto-generated by ProM. Cholecystitis pathway variants are analyzed without activities from the `antibiotics' sub-process and the `monitoring labs' sub-process (see Fig.~\ref{fig:cholecystitis pathway model} for the activities from the two sub-processes). Clinicians confirmed that these sub-processes are standard monitoring and maintenance systems while the patient is waiting for further diagnosis. Only analyzing activities from the primary cholecystitis pathway significantly reduces the level of clinical variation between patient traces.
+
+The cholecystitis pathway model consists of 10 pathway variants. The 10 pathway variants of the cholecystitis pathway model are shown in Fig.~\ref{fig:cholecystitis pathway variants}, and the number of patient traces that follow each pathway variant are listed in Table \ref{table:cholecystitis variant table}. Pathway variants from Fig.~\ref{fig:cholecystitis pathway variants} are sorted from the most common pathway (index 0) to the least common pathway (index 9). The most common pathway variant (index 0) consists of anesthesia, surgery, and surgical pathology lab. The second pathway variant (index 1) includes surgery without anesthesia because of faulty clinical data. The eight patients that follow this pathway variant suffer from both appendicitis and cholecystitis. Appendicitis and cholecystitis are studied as separate healthcare pathways in this study, and activity ‘Anesthesia’ is only recorded in the appendicitis data sets for the eight patients that suffer from both appendicitis and cholecystitis. 
+
+\begin{figure}[t]
+\hspace{-2cm}
+\includegraphics[width=1.5\textwidth]{images/cholecystitis_variant_index_anes.jpg}
+\caption{Cholecystitis pathway variant plot auto-generated by ProM's plugin \plugin{Explore Event Log}. For the purpose of readability the legend was added and the statistics on the left are repeated in Tab.~\ref{table:cholecystitis variant table}.
+The top three variants account for approximately 63\% of the patient traces.}
+\label{fig:cholecystitis pathway variants}
+\end{figure}
+
+\begin{table}[t]
+\centering
+\caption{Statistics of cholecystitis patient traces shown in Fig.~\ref{fig:cholecystitis pathway variants}.}
+\label{table:cholecystitis variant table}
+\begin{tabular}{llllll}
+  \hline
+  \hline
+Variant &     0  &     1  &     2  &     3  &    4\\
+\hline
+Patients   &    19 &     8 &     6 &     4 &    4\\
+  Percentage &  36.54\% &  15.38\% &  11.54\% &  7.69\% &  7.69\%\\
+  \hline
+  \hline
+Variant &     5  &    6  &    7  &    8 &    9\\
+\hline
+Patients   &   3 &     2 &     2 &     2 &     2 \\
+Percentage &  5.77\% &  3.85\% &  3.85\% &  3.85\% &  3.85\% \\
+  \hline
+  \hline
+\end{tabular}
+\end{table}
+
+The cholecystitis pathway model visualized by \texttt{`Inductive Visual Miner'} incorporates activities from the `antibiotics' sub-process and the `monitoring labs' sub-process. A breakdown of the cholecystitis pathway model into one primary pathway and two concurrent sub-processes is shown in Fig.~\ref{fig:cholecystitis pathway model}, and the model notations are summarized in Table \ref{table:notation table}. The first pathway model in Fig.~\ref{fig:cholecystitis pathway model} is the primary pathway, followed by the `antibiotics’ sub-process and the `monitoring labs’ sub-process. Patient traces can execute any combination of the two sub-processes concurrently with the primary pathway. The eight patient traces that follow the second pathway variant (index 1) do not conform to this pathway model because of faulty clinical data. Based on this model, preoperative haematology and chemistry labs tend to span the entire preoperative process, while preoperative antibiotics are taken closer to surgery.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=18cm,angle=270]{images/communicative_cholecystitis_process_models_anes.jpg}
+\caption{Cholecystitis pathway model using nomenclature of Tab.~\ref{table:notation table}. The model is broken down into one primary pathway and two sub-processes.}
+\label{fig:cholecystitis pathway model}
+\end{figure}
+
+\subsection{Length of Stays of Cholecystitis Pathway Variants}
+Length of stays are analyzed based on the 10 identified cholecystitis pathway variants shown in Fig.~\ref{fig:cholecystitis pathway variants}. Hospital length of stay, measured from admission to discharge, for each of the 10 cholecystitis pathway variants are shown in Fig.~\ref{fig:hospital length of stay cholecystitis}. Postoperative length of stay, measured from leaving theatre to discharge, for each pathway variant is shown in Fig.~\ref{fig:post op length of stay cholecystitis}. Pathway variant 1 appears to have the longest total postoperative length of stay even though it consists of no postoperative activities. All patients that follow pathway variant 1 suffer from both appendicitis and cholecystitis, and the clinicians confirmed that the long total postoperative length of stay could be due to a prolonged recovery time.  
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{images/hospital_length_of_stay_cholecystitis_210518.jpeg}
+\caption{Hospital length of stay of the 10 cholecystitis pathway variants, measured from admission to discharge.}
+\label{fig:hospital length of stay cholecystitis}
+\includegraphics[width=\textwidth]{images/postoperative_length_of_stay_cholecystitis.jpeg}
+\caption{Postoperative length of stay of the 10 cholecystitis pathway variants, measured from leaving theatre to discharge.}
+\label{fig:post op length of stay cholecystitis}
+\end{figure}
+
+\subsection{Probabilistic Machine Learning Model for Postoperative Length of Stay of Appendicitis Patients}
 \label{sec:ML}
 The following section investigates the question of whether the pathway
 variants of the appendicitis case study are relevant features or
 covariates for explaining the stochastic volatility of PLS (Fig.~\ref{fig:Geom}a).
-This is quite a challenging task, because the individual healing process is expected to depend on personal factors like age \cite{polanczyk2001impact} as well as the individual severity of the appendicitis inflamation, which in general is unknown at this stage of the data analysis, but might be captured by proxies like surgery duration (SD).
+This is quite a challenging task, because the individual healing process is expected to depend on personal factors like age \cite{polanczyk2001impact} as well as the individual severity of the appendicitis inflammation, which in general is unknown at this stage of the data analysis, but might be captured by proxies like surgery duration (SD).
 
 \begin{figure}
   \centering
@@ -285,11 +384,11 @@ This is quite a challenging task, because the individual healing process is expe
 For the purpose of this analysis, patients' traces with complete
 demographic information (415 samples) are selected and
 the patients' $PLS$, which is
-calculated as the time interval between end of surgery and discharge, is
+calculated as the time interval between leaving operating theatre and discharge, is
 converted into the number of days after surgery. Therefore, a $PLS$ of
 one corresponds to a patient who has been discharged the day after
 surgery. Three of the $N=415$  %DS19fA0
-patient traces had a PLS of zero, because the surgery ended shortly after midnight and the patients were discharged on the same day. In order to simplify our analysis, the interpretation of PLS was broadend to the number of night rests after surgery, such that the PLS of these three patients could be casted to one.
+patient traces had a PLS of zero, because the surgery ended shortly after midnight and the patients were discharged on the same day. In order to simplify our analysis, the interpretation of PLS was broadened to the number of night rests after surgery, such that the PLS of these three patients could be projected to one.
 
 Analysing the PLS of the 415 appendicitis patients reveals a
 histogram which closely resembles a Geometric distribution (Fig.~\ref{fig:Geom}a)
@@ -303,7 +402,6 @@ However, estimating $p$ as inverse mean of the observed PLS to
 \end{equation}
 reveals that the average discharge probability $\hat{p}$ does not
 generalize well over the cohort (Fig.~\ref{fig:Geom}a), because the number of patients being discharged on the first day after surgery is underestimated and the number of patients being discharged on the second and third day after surgery is overestimated.
-
 
 For the following probabilistic machine learning models, the individualized discharge probability $p_i$ is modelled as a generalized linear model (GLM) using the inverse logistic function (logit) as a link function and the geometric distribution for generating the likelihood. 
 For the following analysis, we are comparing two different models of
@@ -440,6 +538,19 @@ However, the uncertainty of discharge probabilities for V1 is significantly larg
 \label{Fig:boxplot}
 \end{figure}
 %\include{cholecystitis}
+
+\section{Discussion from Thesis}
+The aim of this study is to use business process modelling methods to design a process mining pipeline that supports discovery, conformance analysis, and enrichment of healthcare pathways from hospital health records, and to apply the designed pipeline to two clinical case studies. Results from the two case studies indicate that the designed pipeline with ProM as the main process mining tool is effective for mining both simple and complex healthcare pathway models to produce a concise form that is easy for clinical interpretation. This chapter discusses the advantages and limitations of the proposed healthcare pathway mining method for the three stages of analysis (i.e. healthcare pathway discovery, conformance, and enrichment). Future research directions that would maximize this study’s potential for industrial implementation are also discussed.
+
+The discovery stage of the designed process mining pipeline provides an unbiased view of real patient experiences through the treatment process. The proposed approach to pathway discovery is data-based, so the accuracy of the output healthcare pathway model is highly dependent on data accuracy. Incorrectly logged health records in hospital information systems can lead to an inaccurate representation of real patient experiences through the treatment process, so clinicians must be consulted to determine if unexpected results are caused by faulty data. The main advantage of the proposed approach is that healthcare pathway visualization is automatic, and this means that the healthcare pathway mining pipeline has the potential to be fully automated in the future. Health records from the same hospital usually follow systematic formats and notations, so the process of converting electronic health records to clinical event logs compatible with business process mining software can be automated. The main challenge to automating the entire healthcare pathway discovery process is the event log processing steps required to reduce clinical variations. Even though the chapter on healthcare pathway mining methodology (Chapter 2) provides guidelines on processing steps that are effective for reducing unnecessary clinical variations in event logs, a certain level of clinical input is still required to ensure that no crucial information is filtered. In the first case study (see Chapter 3), appendicitis and cholecystitis pathways both contain repetitive activity patterns (i.e. antibiotics and monitoring labs) that result in incomprehensible spaghetti-models, and these patterns are identified by manual inspection of the pathway variants. There is potential for the process mining pipeline proposed in this study to be combined with clinical pattern mining algorithms developed in previous studies (e.g. the SCP-Miner and CCP-Miner developed by Huang, Lu, and Duan [16]) so that repetitive activity patterns can be identified and condensed automatically. Further research is required to determine the compatibility of the proposed process mining pipeline with various pattern mining algorithms.
+
+The appendicitis and cholecystitis pathway models, from the first clinical case study, and the ambulatory cardiac care pathway model, from the second clinical case study, are all confirmed by clinicians to be easy to interpret and clinically meaningful, but one major limitation of the proposed pathway discovery approach is that the discovered healthcare pathway models can contain pathways that are not executed by any patient traces in the clinical event log. This is because the process mining software arranges all activities into a coherent pathway model by a configuration that summarizes all pathway variants, but a configuration that summarizes pathway variants does not guarantee that all pathways in the final healthcare pathway model make sense clinically. This also means that the pathway representation of models discovered by the proposed pipeline is unable to accurately capture all relations between activities. For example, the ambulatory cardiac care pathway model from the second case study (see Figure 56) shows that it is possible for patients to perform activity ‘Coronary Angiogram’ without performing ‘First Cardiology’ first. Close inspection of the event log revealed that patients who perform ‘Coronary Angiogram’ always perform ‘First Cardiology’ first, but this relation between the two activities is not evident in the discovered pathway model. Analysis of pathway variants instead of the pathway model does portray the true relations between all activities but this is not a realistic approach for complex healthcare pathways. For relatively simple healthcare pathways like the appendicitis and cholecystitis case study, patient traces can be organized into a manageable number of unique pathway variants and all variants can be analyzed individually. For complex healthcare pathways like the ambulatory cardiac care case study, patient traces cannot be organized into a manageable number of pathway variants because the level of variation between patients is too high. The healthcare pathway discovery stage of the methods presented here provides a concise overview of the fundamental structure of the overall pathway but does not always effectively capture the true relations between clinical activities. 
+The conformance analysis stage of the designed process mining pipeline effectively identifies and visualizes patient deviations from the discovered healthcare pathway models. Even though this study only analyzes patient conformance to the discovered healthcare pathways, the same method could be applied analyze patient conformance to predefined ideal pathways or new pathway designs. The proposed approach to conformance analysis could be extended in the future to a monitoring tool to maintain quality of care for all patients. It is very difficult for clinicians to manually track individual patient traces through the treatment process and ensure that they are conforming to standard protocols. Identifying unwarranted deviations and making the required interventions early in the process has the potential to improve health outcomes and decrease cost. Even though the proposed approach effectively visualizes patient deviations, it cannot distinguish between clinically significant deviations and minor deviations that have no influence on patient health outcome. For example, some deviations are the results of scheduling availability and the order in which a required set of clinical activities are executed is not always relevant to health outcome. The proposed conformance analysis approach cannot automatically identify clinically significant deviations, and reasons for all deviations must be investigated manually. This is a major obstacle to future hospital implementation of the proposed pipeline, because it is inefficient and impractical to alert clinicians to minor patient deviations. Further research is required to develop a more specialized tool for conformance analysis that is able to classify patient deviations according to their association with patient health outcome.
+
+The enrichment stage of the designed process mining pipeline is effective for identification of bottlenecks and treatment delays in healthcare pathways. The enrichment stage of the ambulatory cardiac care case study revealed that waiting times for transthoracic echo are exceedingly long (see §4.7), and resource reallocation is recommended to reduce the treatment delay. The effects of the delay on patient health outcome can be further investigated by computer simulations, but more clinical data is required for this approach. Analysis of waiting times and hospital length of stays is based on the assumption that the occurring timestamps of clinical activities are accurate. North Shore Hospital has an automated information system that stores patient records in real time and accuracy of the timestamps in the two case studies is therefore high, but the precision of activity timestamps is not always consistent across hospital systems. For example, one clinical department could record the exact time of day an activity is executed, while another department only records the date of execution. This leads to a margin of error of 24 hours, and this margin of error must be taken into account when interpreting the results. Accuracy and precision of clinical data must be assessed when the proposed pipeline is applied to new clinical case studies.
+
+Analysis of pathway performance based on pathway variants reveals associations between clinical activities and performance indicators, but associations do not necessarily indicate causation. For example, the appendicitis pathway variants from the first case study that consist of postoperative imaging activities generally have longer postoperative length of stays, even though larger samples are required to confirm this connection (see §3.9). One possible explanation is that appendicitis patients that develop extra complications are more likely to require postoperative imaging activities. These are also the patients that remain under monitoring for a longer time period and hence have a delayed discharge date. Similarly, the ambulatory cardiac care pathway variants from the second case study that consist of visits to the emergency department generally have higher mortality rates (see §4.84.8). In both of these cases, patient condition is the main factor that influences the pathway performance indicators.
+Dr. Andreas W. Kempa-Liehr’s work on developing probabilistic models to predict postoperative length of stay using information from the discovered healthcare pathway has the potential to improve the efficiency of hospital scheduling and resource allocation. This also shows that the proposed process mining pipeline has the potential to support the development of machine learning models for the prediction of performance indicators. A future improvement that could be made to the proposed pipeline is the incorporation of clinical diagnosis into the healthcare pathway models. Incorporating clinical diagnosis into pathway models allows for the identification of critical decision points where pathway variants diverge, but the main challenge is obtaining access to clinical diagnostic data. Overall, there is potential for the use of business process modelling techniques to improve the method of analysis of healthcare pathways, but the capability of other more specialized business process mining software should also be explored.
 
 \section{Conclusion}
 Healthcare pathways are critical for maintaining quality of care and
