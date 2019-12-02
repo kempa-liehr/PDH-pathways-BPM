@@ -344,7 +344,7 @@ x_i = (SD_i, \text{log}(age_i), V_{0,i}, V_{1, i}, V_{2, i}, V_{3, i}).
  being available at the end of surgery, when future treatment steps and therefore the complete pathway variant for the respective $i^\text{th}$ patient have been decided on:
 \begin{equation}
 \begin{split}
-Pr(PLS_i=k|x_i) & = \text{Geom}\left(p(x_i)\right) \\
+Pr(PLS_i=k|x_i) & = \text{Geom}\left(k;p(x_i)\right) \\
 & = \left(1-p(x_i)\right)^{k-1}\left(p(x_i)\right)^{k} \\
 %& = \left(1-\mathbb{E}_{x_i}[p]\right)^{k-1}\left(\mathbb{E}_{x_i}[p]\right)^{k} \\
           %        & = \left(1-\text{logistic}(f(x_i))\right)^{k-1}\text{logistic}(f(x_i))^{k} \\
