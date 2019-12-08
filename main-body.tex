@@ -36,13 +36,13 @@ This section outlines the proposed process mining pipeline designed for mining h
 \end{figure}
 
 This study evaluates ProM (version 6.7) as the main process mining tool\footnote{\url{http://www.promtools.org}}. 
-ProM is an open-source process mining software that is effective for construction of business models from input data files. The use of ProM in the healthcare sector has not been thoroughly explored in the past, but Van Der Aalst et al.  have demonstrated the applicability of the software for industrial processes \cite{VanDerAalst2007}. ProM is chosen for this study because it has an intuitive user interface and supports many process mining plug-ins \cite{VanDongen2005}. The process mining and conformance analysis plug-ins supported by ProM are well documented. All these features of ProM make it easy for the process mining steps in the pipeline (see Fig.~\ref{fig:pipeline}) to be repeated by users with no background in process mining.
+ProM is an open-source process mining software that is effective for construction of business models from input data files. ProM is chosen for this study because it has an intuitive user interface and supports many process mining plug-ins \cite{VanDongen2005}. The process mining and conformance analysis plug-ins supported by ProM are well documented. All these features of ProM make it easy for the process mining steps in the pipeline (see Fig.~\ref{fig:pipeline}) to be repeated by users with no background in process mining. The process mining techniques used in this paper are selected based on the interpretability of the output pathway models.
 
 \subsection{Healthcare Pathway Discovery}
 Healthcare pathway discovery is the first phase of the proposed process mining pipeline. It consists of two steps: clinical data processing and pathway visualization, which are conducted iteratively until a concise model is produced.
 The aim is to use patient healthcare records stored in hospital information systems to design a concise pathway model that is easy for clinical interpretation. Therefore, clinical input is critical to the selection of appropriate processing methods. 
  
-Healthcare pathways generally have much higher levels of complexity than standard business processes, and unprocessed clinical data contains too many clinical variations for a clean and concise pathway model to be mined \cite{Huang2013, Veiga2010}. Each pathway variant is a unique event sequence of a complete patient trace. The ProM plug-in \plugin{Explore Event Log} extracts pathway variants from patient traces, and the total number of pathway variants is an indicator of the level of clinical variation between patient traces. The basic format of an example pathway variant extracted by \plugin{Explore Event Log} is demonstrated in  Fig.~\ref{fig:example pathway variant}.
+Healthcare pathways generally have much higher levels of complexity than standard business processes, and unprocessed clinical data contains too many clinical variations for a clean and concise pathway model to be mined \cite{Huang2013, Veiga2010}. Each pathway variant is a unique event sequence of a complete patient trace. The ProM plug-in \plugin{Explore Event Log} (from the Log Enhancement package) extracts pathway variants from patient traces, and the total number of pathway variants is an indicator of the level of clinical variation between patient traces. The basic format of an example pathway variant extracted by \plugin{Explore Event Log} is demonstrated in  Fig.~\ref{fig:example pathway variant}.
 
 \begin{figure}[t]
 \centering
@@ -66,8 +66,9 @@ Clinical input is highly recommended at this step particularly for complex or un
 %\subsubsection{Pathway Visualization}
 
 \subsection{Healthcare Pathway Conformance Analysis}
-Conformance analysis evaluates the degree to which a healthcare pathway model captures movement of patient traces by comparing the pathway model to clinical data. 
-Accuracy of the discovered healthcare pathway model is validated if the majority of the patient traces conform to the model. Patient traces rarely all follow identical pathways, so the healthcare pathway model is not expected to capture all patient traces. The objective is to discover a healthcare pathway model that captures the fundamental structure of most patient traces. 
+It is very difficult for clinicians to manually track individual patient traces through the treatment process and ensure that they are conforming to standard protocols. Identifying unwarranted deviations and making the required interventions early in the process has the potential to improve health outcomes and decrease cost. 
+Conformance analysis identifies patient deviations by comparing the pathway model to clinical data. 
+Accuracy of the discovered healthcare pathway model is validated if the majority of the patient traces conform to the model. Patient traces rarely all follow identical pathways, so the healthcare pathway model is not expected to capture all patient traces. The objective is to discover a healthcare pathway model that captures the fundamental structure of most patient traces and detect unexpected patient deviations. 
 
 ProM offers tools for conformance analysis of healthcare
 pathway models: Its plug-in \plugin{Inductive Visual Miner} compares
@@ -132,12 +133,12 @@ SD (Sec.~\ref{sec:ML}).
 
 \section{Case Study: Appendicitis and Cholecystitis Healthcare Pathways}
 This section discusses the healthcare pathway discovery process for the appendicitis and cholecystitis case studies. For this purpose, two years’ worth of data
-from 2015 to 2017 on 448 appendicitis patients and 52 cholecystitis patients have been analysed. 
+from 2015 to 2017 on 448 appendicitis patients and 52 cholecystitis patients have been analysed. These case studies are selected because clinicians confirmed they are relatively simple surgical pathways with clear start and end points.
 
 \subsection{Data Description}
 \label{Sec:DataDescription}
 The patient records for both case studies were collected from North Shore Hospital in Auckland, New Zealand.
-The data were de-identified and an ethics approval for this research was obtained.
+The data were de-identified and an ethics approval for this research was obtained. All data sets collected from the hospital's information system on appendicitis and cholecystitis patients are summarized in Tab.~\ref{table:data description table}. Theatre encounter is the system ID used to identify patient traces, and clinical activities are categorized by clinical departments (e.g. radiology, pharmacy). Unfortunately, patient demographics data is only available for appendicitis patients. These data sets are processed and imported into ProM for pathway discovery and conformance analysis.
 
 \newcommand{\tabitem}{~~\llap{\textbullet}~~}
 
@@ -150,9 +151,13 @@ The data were de-identified and an ethics approval for this research was obtaine
   \hline
 Hospital Data set  &     Columns of Interest & Data Type  \\
 \hline
-Acute Theatre   &    \tabitem Theatre Encounter & String\\  &\tabitem Surgery Start Time\\  &\tabitem Surgery End Time\\  &\tabitem Into Theatre Time\\  &\tabitem Out of Theatre Time\\
+Acute Theatre   &    \tabitem Theatre Encounter & String\\  &\tabitem Surgery Start Time & Datetime\\  &\tabitem Surgery End Time & Datetime\\  &\tabitem Into Theatre Time & Datetime\\  &\tabitem Out of Theatre Time & Datetime\\
   \hline
-General Surgery   &    \tabitem Theatre Encounter\\
+General Surgery   &    \tabitem Theatre Encounter & String\\  &\tabitem Admission Time & Datetime\\  &\tabitem Discharge Time & Datetime\\
+  \hline
+Radiology/Pharmacy   &    \tabitem Theatre Encounter & String\\  /Lab/Anesthesia & \tabitem Clinical Activity & String\\  &\tabitem Clinical Activity Start Time  & Datetime\\
+  \hline
+Patient Demographics    &    \tabitem Theatre Encounter & String\\(specific to appendicitis patients)  &\tabitem Patient Age & Integer\\  &\tabitem Patient Gender  & String\\  &\tabitem Patient Ethnicity  & String\\
   \hline
   \hline
 \end{tabular}
@@ -304,7 +309,7 @@ Length of stays in hospital are analyzed based on the 13 identified appendicitis
 \label{Sec:CholecystitisDiscoveryConformance}
 This section shows the cholecystitis pathway variant plot auto-generated by ProM. Cholecystitis pathway variants are analyzed without activities from the `antibiotics' sub-process and the `monitoring labs' sub-process (see Fig.~\ref{fig:cholecystitis pathway model} for the activities from the two sub-processes). Clinicians confirmed that these sub-processes are standard monitoring and maintenance systems while the patient is waiting for further diagnosis. Only analyzing activities from the primary cholecystitis pathway significantly reduces the level of clinical variation between patient traces.
 
-The cholecystitis pathway model consists of 10 pathway variants. The 10 pathway variants of the cholecystitis pathway model are shown in Fig.~\ref{fig:cholecystitis pathway variants}, and the number of patient traces that follow each pathway variant are listed in Table \ref{table:cholecystitis variant table}. Pathway variants from Fig.~\ref{fig:cholecystitis pathway variants} are sorted from the most common pathway (index 0) to the least common pathway (index 9). The most common pathway variant (index 0) consists of anesthesia, surgery, and surgical pathology lab. The second pathway variant (index 1) includes surgery without anesthesia because of faulty clinical data. The eight patients that follow this pathway variant suffer from both appendicitis and cholecystitis. Appendicitis and cholecystitis are studied as separate healthcare pathways in this study, and activity ‘Anesthesia’ is only recorded in the appendicitis data sets for the eight patients that suffer from both appendicitis and cholecystitis. 
+The cholecystitis pathway model consists of 10 pathway variants. The 10 pathway variants of the cholecystitis pathway model are shown in Fig.~\ref{fig:cholecystitis pathway variants}, and the number of patient traces that follow each pathway variant are listed in Table \ref{table:cholecystitis variant table}. Pathway variants from Fig.~\ref{fig:cholecystitis pathway variants} are sorted from the most common pathway (index 0) to the least common pathway (index 9). The most common pathway variant (index 0) consists of anesthesia, surgery, and surgical pathology lab. The second pathway variant (index 1) includes surgery without anesthesia because of faulty clinical data. 
 
 \begin{figure}[t]
 \hspace{-2cm}
@@ -336,7 +341,7 @@ Percentage &  5.77\% &  3.85\% &  3.85\% &  3.85\% &  3.85\% \\
 \end{tabular}
 \end{table}
 
-The cholecystitis pathway model visualized by \texttt{`Inductive Visual Miner'} incorporates activities from the `antibiotics' sub-process and the `monitoring labs' sub-process. A breakdown of the cholecystitis pathway model into one primary pathway and two concurrent sub-processes is shown in Fig.~\ref{fig:cholecystitis pathway model}, and the model notations are summarized in Table \ref{table:notation table}. The first pathway model in Fig.~\ref{fig:cholecystitis pathway model} is the primary pathway, followed by the `antibiotics’ sub-process and the `monitoring labs’ sub-process. Patient traces can execute any combination of the two sub-processes concurrently with the primary pathway. The eight patient traces that follow the second pathway variant (index 1) do not conform to this pathway model because of faulty clinical data. Based on this model, preoperative haematology and chemistry labs tend to span the entire preoperative process, while preoperative antibiotics are taken closer to surgery.
+The cholecystitis pathway model visualized by \texttt{`Inductive Visual Miner'} incorporates activities from the `antibiotics' sub-process and the `monitoring labs' sub-process. A breakdown of the cholecystitis pathway model into one primary pathway and two concurrent sub-processes is shown in Fig.~\ref{fig:cholecystitis pathway model}, and the model notations are summarized in Table \ref{table:notation table}. The first pathway model in Fig.~\ref{fig:cholecystitis pathway model} is the primary pathway, followed by the `antibiotics’ sub-process and the `monitoring labs’ sub-process. Patient traces can execute any combination of the two sub-processes concurrently with the primary pathway. Based on this model, preoperative haematology and chemistry labs tend to span the entire preoperative process, while preoperative antibiotics are taken closer to surgery. The eight patient traces that follow the second pathway variant (index 1) do not conform to this pathway model because of faulty clinical data. These eight patients suffer from both appendicitis and cholecystitis. Appendicitis and cholecystitis are studied as separate healthcare pathways in this study, and activity ‘Anesthesia’ is only recorded in the appendicitis data sets for the eight patients that suffer from both appendicitis and cholecystitis. This demonstrates that conformance analysis is able to detect flaws in the hospital's information system.
 
 \begin{figure}[t]
 \centering
@@ -363,7 +368,7 @@ Length of stays are analyzed based on the 10 identified cholecystitis pathway va
 The following section investigates the question of whether the pathway
 variants of the appendicitis case study are relevant features or
 covariates for explaining the stochastic volatility of PLS (Fig.~\ref{fig:Geom}a).
-This is quite a challenging task, because the individual healing process is expected to depend on personal factors like age \cite{polanczyk2001impact} as well as the individual severity of the appendicitis inflammation, which in general is unknown at this stage of the data analysis, but might be captured by proxies like surgery duration (SD).
+This is quite a challenging task, because the individual healing process is expected to depend on personal factors like age \cite{polanczyk2001impact} as well as the individual severity of the appendicitis inflammation, which in general is unknown at this stage of the data analysis, but might be captured by proxies like surgery duration (SD). As mentioned in Sec.~\ref{Sec:DataDescription}, demographics data on cholecystitis patients is available so probabilistic models are only built for appendicitis patients.
 
 \begin{figure}
   \centering
