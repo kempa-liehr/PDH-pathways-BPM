@@ -36,7 +36,7 @@ This section outlines the proposed process mining pipeline designed for mining h
 \end{figure}
 
 This study evaluates ProM (version 6.7) as the main process mining tool\footnote{\url{http://www.promtools.org}}. 
-ProM is an open-source process mining software that is effective for construction of business models from input data files. ProM is chosen for this study because it has an intuitive user interface and supports many process mining plug-ins \cite{VanDongen2005}. The process mining and conformance analysis plug-ins supported by ProM are well documented. All these features of ProM make it easy for the process mining steps in the pipeline (see Fig.~\ref{fig:pipeline}) to be repeated by users with no background in process mining. The process mining techniques used in this paper are selected based on the interpretability of the output pathway models.
+ProM is an open-source process mining software that is effective for construction of business models from input data files. ProM is chosen for this study because it has an intuitive user interface and supports many process mining plug-ins \cite{VanDongen2005}. The process mining and conformance analysis plug-ins supported by ProM are well documented. All these features of ProM make it easy for the process mining steps in the pipeline (see Fig.~\ref{fig:pipeline}) to be repeated by users with no background in process mining. The process mining techniques used in this paper are selected based on their ease for clinical interpretation and their potential to be combined with machine learning models. 
 
 \subsection{Healthcare Pathway Discovery}
 Healthcare pathway discovery is the first phase of the proposed process mining pipeline. It consists of two steps: clinical data processing and pathway visualization, which are conducted iteratively until a concise model is produced.
@@ -120,9 +120,9 @@ machine learning models are appropriate for analysing healthcare
 pathways.
 Instead, probabilistic machine learning models
 \cite{Ghahramani2015_PML} are used for extracting interpretable models
-from healtcare pathways (Sec.~\ref{sec:ML}).
+from healthcare pathways (Sec.~\ref{sec:ML}).
 For this purpose, feature engineering \cite{DongLiu2018_FE} from
-the patients's pathway traces (e.g. SD, pathway variant),
+the patients' pathway traces (e.g. SD, pathway variant),
 demographics (e.g. age), as well as medical documentation like written
 diagnosis, time series, or images become important.
 In order to demonstrate this approach, the following case study
@@ -149,7 +149,7 @@ The data were de-identified and an ethics approval for this research was obtaine
 \begin{tabular}{lll}
   \hline
   \hline
-Hospital Data set  &     Columns of Interest & Data Type  \\
+EMR  &     Columns of Interest & Data Type  \\
 \hline
 Acute Theatre   &    \tabitem Theatre Encounter & String\\  &\tabitem Surgery Start Time & Datetime\\  &\tabitem Surgery End Time & Datetime\\  &\tabitem Into Theatre Time & Datetime\\  &\tabitem Out of Theatre Time & Datetime\\
   \hline
@@ -157,7 +157,7 @@ General Surgery   &    \tabitem Theatre Encounter & String\\  &\tabitem Admissio
   \hline
 Radiology/Pharmacy   &    \tabitem Theatre Encounter & String\\  /Lab/Anesthesia & \tabitem Clinical Activity & String\\  &\tabitem Clinical Activity Start Time  & Datetime\\
   \hline
-Patient Demographics    &    \tabitem Theatre Encounter & String\\(specific to appendicitis patients)  &\tabitem Patient Age & Integer\\  &\tabitem Patient Gender  & String\\  &\tabitem Patient Ethnicity  & String\\
+Patient    &    \tabitem Theatre Encounter & String\\(specific to appendicitis patients)  &\tabitem Patient Age & Integer\\  &\tabitem Patient Gender  & String\\  &\tabitem Patient Ethnicity  & String\\
   \hline
   \hline
 \end{tabular}
@@ -293,7 +293,7 @@ The most common pathway variant (index 0) shown in Fig.~\ref{fig:appendicitis pa
 \end{table}
 
 \subsection{Length of Stays of Appendicitis Pathway Variants}
-Length of stays in hospital are analyzed based on the 13 identified appendicitis pathway variants shown in Fig.~\ref{fig:appendicitis pathway variants}. Hospital length of stay, measured from admission to discharge, for each of the 13 appendicitis pathway variants are shown in Fig.~\ref{fig:hospital length of stay appendicitis}. Postoperative length of stay, measured from leaving theatre to discharge, for each pathway variant is shown in Fig.~\ref{fig:post op length of stay appendicitis}. Pathway variant 9 has the longest length of stay for both measures. Pathway variants 5, 7 and 11 also have relatively long length of stays. Out of these four pathway variants, only pathway variant 7 consists of no postoperative activities. Probabilistic machine learning models are used to further investigate factors influencing postoperative length of stay (Sec.~\ref{sec:ML}).
+Length of stays in hospital are analyzed based on the 13 identified appendicitis pathway variants shown in Fig.~\ref{fig:appendicitis pathway variants}. Hospital length of stay, measured from admission to discharge, for each of the 13 appendicitis pathway variants are shown in Fig.~\ref{fig:hospital length of stay appendicitis}. Postoperative length of stay, measured from leaving theatre to discharge, for each pathway variant is shown in Fig.~\ref{fig:post op length of stay appendicitis}. Pathway variant 9 has the longest length of stay for both measures. Pathway variants 5, 7 and 11 also have relatively long length of stays. Out of these four pathway variants, only pathway variant 7 consists of no postoperative activities. The number of patient traces that follow each pathway variant is limited, and more samples are required to identify rate-determining steps. Probabilistic machine learning models are used to further investigate factors influencing postoperative length of stay (Sec.~\ref{sec:ML}).
 
 \begin{figure}[t]
 \centering
@@ -368,7 +368,7 @@ Length of stays are analyzed based on the 10 identified cholecystitis pathway va
 The following section investigates the question of whether the pathway
 variants of the appendicitis case study are relevant features or
 covariates for explaining the stochastic volatility of PLS (Fig.~\ref{fig:Geom}a).
-This is quite a challenging task, because the individual healing process is expected to depend on personal factors like age \cite{polanczyk2001impact} as well as the individual severity of the appendicitis inflammation, which in general is unknown at this stage of the data analysis, but might be captured by proxies like surgery duration (SD). As mentioned in Sec.~\ref{Sec:DataDescription}, demographics data on cholecystitis patients is available so probabilistic models are only built for appendicitis patients.
+This is quite a challenging task, because the individual healing process is expected to depend on personal factors like age \cite{polanczyk2001impact} as well as the individual severity of the appendicitis inflammation, which in general is unknown at this stage of the data analysis, but might be captured by proxies like surgery duration (SD). As mentioned in Sec.~\ref{Sec:DataDescription}, demographics data on cholecystitis patients is unavailable so probabilistic models are only built for appendicitis patients.
 
 \begin{figure}
   \centering
@@ -380,7 +380,7 @@ This is quite a challenging task, because the individual healing process is expe
   \end{tabular}
     \caption{Modelling PLS as geometric distribution without patient
       specific model (a) and with individualised posterior (b) from
-      model B (Eq \eqref{modelB}). Sampling from patient specific
+      model B (Eq. \eqref{modelB}). Sampling from patient specific
       posterior distributions replicates the observed PLS quite well.
       }
     \label{fig:Geom}
@@ -400,7 +400,7 @@ histogram which closely resembles a Geometric distribution (Fig.~\ref{fig:Geom}a
 \begin{equation}
 Pr(PLS=k) = \text{Geom}(k; p) = (1-p)^{k-1}p^{k},
 \end{equation}
-parametrized by probability $p$ of being discharged on the $k^\text{th}$ day, respectively $k$ nights of rest after surgery. 
+parameterized by probability $p$ of being discharged on the $k^\text{th}$ day, respectively $k$ nights of rest after surgery. 
 However, estimating $p$ as inverse mean of the observed PLS to 
 \begin{equation}
  \hat{p} = \frac{N}{\sum\limits_{i=1}^N PLS_i} \approx 61.8\%	
@@ -454,7 +454,7 @@ Pr(PLS_i=k|x_i) & = \text{Geom}\left(k;p(x_i)\right) \\
           %        & = \left(1+e^{f(x_i)}\right) \left(2 + e^{-f(x_i)} + e^{f(x_i)}\right)^{-k}
 \end{split}
 \end{equation}
-with $p(x_i)$ being modelled either by Eqn. \eqref{modelA} or
+with $p(x_i)$ being modelled either by Eq. \eqref{modelA} or
 \eqref{modelB}.
     
 The statistical model has been fitted using PyMC3
@@ -469,11 +469,11 @@ $\text{log}(age_i)\times V_2$ and $\text{log}(age_i)\times V_3$ are
 close to zero with negative expectation values but a 25\% and 15\%
 probability of being larger than zero (Tab.~\ref{tab:coeff}). 
 Therefore, we have decided to focus the following analysis of the
-fitted model on Eq.~\ref{modelB} for which all credible intervals
+fitted model on Eq.~\eqref{modelB} for which all credible intervals
 exclude zero (Fig.~\ref{fig:forest_plots}b).
 However, this does not change the overall trend depicted in Fig.~\ref{fig:posterior}.
 It is important to note that both the coefficients of $SD$ and $\text{log}(age)$ are negative. This means that for the base model of variants V4--V12 as well as variants V2 and V3, the probability of discharge decreases with increasing SD and age. 
-Compared to the base model, Variants V2 and V3 have a higher discharge propability because both coefficients are positive. 
+Compared to the base model, Variants V2 and V3 have a higher discharge probability because both coefficients are positive. 
 The situation is more complicated for variants V0 and V1, because their coefficients are negative but the coefficients of their interaction terms with $\text{log}(age)$ are positive, which basically counterbalances the effect of $\text{log}(age)$.
 
 \begin{figure}
