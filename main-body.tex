@@ -131,20 +131,20 @@ takes into account pathway variants
 (Sec.~\ref{Sec:AppendicitisDiscoveryConformance}), as well as demographics, and
 SD (Sec.~\ref{sec:ML}).
 
-\section{Case Study: Appendicitis and Cholecystitis Healthcare Pathways}
-This section discusses the healthcare pathway discovery process for the appendicitis and cholecystitis case studies. For this purpose, two years’ worth of data
-from 2015 to 2017 on 448 appendicitis patients and 52 cholecystitis patients have been analysed. These case studies are selected because clinicians confirmed they are relatively simple surgical pathways with clear start and end points.
+\section{Case Study: Appendicitis Healthcare Pathways}
+This section discusses the healthcare pathway discovery process for the appendicitis case study. For this purpose, two years’ worth of data
+from 2015 to 2017 on 448 appendicitis patients have been analysed. This case study is selected because clinicians confirmed they are relatively simple surgical pathways with clear start and end points.
 
 \subsection{Data Description}
 \label{Sec:DataDescription}
-The patient records for both case studies were collected from North Shore Hospital in Auckland, New Zealand.
-The data were de-identified and an ethics approval for this research was obtained. All data sets collected from the hospital's information system on appendicitis and cholecystitis patients are summarized in Tab.~\ref{table:data description table}. Theatre encounter is the system ID used to identify patient traces, and clinical activities are categorized by clinical departments (e.g. radiology, pharmacy). Unfortunately, patient demographics data is only available for appendicitis patients. These data sets are processed and imported into ProM for pathway discovery and conformance analysis.
+The patient records for this case study were collected from North Shore Hospital in Auckland, New Zealand.
+The data were de-identified and an ethics approval for this research was obtained. All data sets collected from the hospital's information system on appendicitis patients are summarized in Tab.~\ref{table:data description table}. Theatre encounter is the system ID used to identify patient traces, and clinical activities are categorized by clinical departments (e.g. radiology, pharmacy). These data sets are processed and imported into ProM for pathway discovery and conformance analysis.
 
 \newcommand{\tabitem}{~~\llap{\textbullet}~~}
 
 \begin{table}[t]
 \centering
-\caption{Description of all data sets collected from North Shore Hospital for the appendicitis and cholecystitis case studies.}
+\caption{Description of all data sets collected from North Shore Hospital for the appendicitis case study.}
 \label{table:data description table}
 \begin{tabular}{lll}
   \hline
@@ -157,7 +157,7 @@ General Surgery   &    \tabitem Theatre Encounter & String\\  &\tabitem Admissio
   \hline
 Radiology/Pharmacy   &    \tabitem Theatre Encounter & String\\  /Lab/Anesthesia & \tabitem Clinical Activity & String\\  &\tabitem Clinical Activity Start Time  & Datetime\\
   \hline
-Patient    &    \tabitem Theatre Encounter & String\\(specific to appendicitis patients)  &\tabitem Patient Age & Integer\\  &\tabitem Patient Gender  & String\\  &\tabitem Patient Ethnicity  & String\\
+Patient    &    \tabitem Theatre Encounter & String\\  &\tabitem Patient Age & Integer\\
   \hline
   \hline
 \end{tabular}
@@ -293,74 +293,13 @@ The most common pathway variant (index 0) shown in Fig.~\ref{fig:appendicitis pa
 \end{table}
 
 \subsection{Length of Stays of Appendicitis Pathway Variants}
-Length of stays in hospital are analyzed based on the 13 identified appendicitis pathway variants shown in Fig.~\ref{fig:appendicitis pathway variants}. Hospital length of stay, measured from admission to discharge, for each of the 13 appendicitis pathway variants are shown in Fig.~\ref{fig:hospital length of stay appendicitis}. Postoperative length of stay, measured from leaving theatre to discharge, for each pathway variant is shown in Fig.~\ref{fig:post op length of stay appendicitis}. Pathway variant 9 has the longest length of stay for both measures. Pathway variants 5, 7 and 11 also have relatively long length of stays. Out of these four pathway variants, only pathway variant 7 consists of no postoperative activities. The number of patient traces that follow each pathway variant is limited, and more samples are required to identify rate-determining steps. Probabilistic machine learning models are used to further investigate factors influencing postoperative length of stay (Sec.~\ref{sec:ML}).
+Length of stays in hospital are analyzed based on the 13 identified appendicitis pathway variants shown in Fig.~\ref{fig:appendicitis pathway variants}. Postoperative length of stay, measured from leaving theatre to discharge, for each of the 13 appendicitis pathway variants are shown in Fig.~\ref{fig:post op length of stay appendicitis}. Pathway variant 9 has the longest postoperative length of stay. Pathway variants 5, 7 and 11 also have relatively long postoperative length of stays. Out of these four pathway variants, only pathway variant 7 consists of no postoperative activities. The number of patient traces that follow each pathway variant is limited, and more samples are required to identify rate-determining steps. Probabilistic machine learning models are used to further investigate factors influencing postoperative length of stay (Sec.~\ref{sec:ML}).
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\textwidth]{images/hospital_length_of_stay_appendicitis_210518.jpeg}
-\caption{Hospital length of stay of the 13 appendicitis pathway variants, measured from admission to discharge.}
-\label{fig:hospital length of stay appendicitis}
 \includegraphics[width=\textwidth]{images/postoperative_length_of_stay_appendicitis.jpeg}
 \caption{Postoperative length of stay of the 13 appendicitis pathway variants, measured from leaving theatre to discharge.}
 \label{fig:post op length of stay appendicitis}
-\end{figure}
-
-\subsection{Cholecystitis Pathway Discovery and Conformance Analysis}
-\label{Sec:CholecystitisDiscoveryConformance}
-This section shows the cholecystitis pathway variant plot auto-generated by ProM. Cholecystitis pathway variants are analyzed without activities from the `antibiotics' sub-process and the `monitoring labs' sub-process (see Fig.~\ref{fig:cholecystitis pathway model} for the activities from the two sub-processes). Clinicians confirmed that these sub-processes are standard monitoring and maintenance systems while the patient is waiting for further diagnosis. Only analyzing activities from the primary cholecystitis pathway significantly reduces the level of clinical variation between patient traces.
-
-The cholecystitis pathway model consists of 10 pathway variants. The 10 pathway variants of the cholecystitis pathway model are shown in Fig.~\ref{fig:cholecystitis pathway variants}, and the number of patient traces that follow each pathway variant are listed in Table \ref{table:cholecystitis variant table}. Pathway variants from Fig.~\ref{fig:cholecystitis pathway variants} are sorted from the most common pathway (index 0) to the least common pathway (index 9). The most common pathway variant (index 0) consists of anesthesia, surgery, and surgical pathology lab. The second pathway variant (index 1) includes surgery without anesthesia because of faulty clinical data. 
-
-\begin{figure}[t]
-\hspace{-2cm}
-\includegraphics[width=1.5\textwidth]{images/cholecystitis_variant_index_anes.jpg}
-\caption{Cholecystitis pathway variant plot auto-generated by ProM's plugin \plugin{Explore Event Log}. For the purpose of readability the legend was added and the statistics on the left are repeated in Tab.~\ref{table:cholecystitis variant table}.
-The top three variants account for approximately 63\% of the patient traces.}
-\label{fig:cholecystitis pathway variants}
-\end{figure}
-
-\begin{table}[t]
-\centering
-\caption{Statistics of cholecystitis patient traces shown in Fig.~\ref{fig:cholecystitis pathway variants}.}
-\label{table:cholecystitis variant table}
-\begin{tabular}{llllll}
-  \hline
-  \hline
-Variant &     0  &     1  &     2  &     3  &    4\\
-\hline
-Patients   &    19 &     8 &     6 &     4 &    4\\
-  Percentage &  36.54\% &  15.38\% &  11.54\% &  7.69\% &  7.69\%\\
-  \hline
-  \hline
-Variant &     5  &    6  &    7  &    8 &    9\\
-\hline
-Patients   &   3 &     2 &     2 &     2 &     2 \\
-Percentage &  5.77\% &  3.85\% &  3.85\% &  3.85\% &  3.85\% \\
-  \hline
-  \hline
-\end{tabular}
-\end{table}
-
-The cholecystitis pathway model visualized by \texttt{`Inductive Visual Miner'} incorporates activities from the `antibiotics' sub-process and the `monitoring labs' sub-process. A breakdown of the cholecystitis pathway model into one primary pathway and two concurrent sub-processes is shown in Fig.~\ref{fig:cholecystitis pathway model}, and the model notations are summarized in Table \ref{table:notation table}. The first pathway model in Fig.~\ref{fig:cholecystitis pathway model} is the primary pathway, followed by the `antibiotics’ sub-process and the `monitoring labs’ sub-process. Patient traces can execute any combination of the two sub-processes concurrently with the primary pathway. Based on this model, preoperative haematology and chemistry labs tend to span the entire preoperative process, while preoperative antibiotics are taken closer to surgery. The eight patient traces that follow the second pathway variant (index 1) do not conform to this pathway model because of faulty clinical data. These eight patients suffer from both appendicitis and cholecystitis. Appendicitis and cholecystitis are studied as separate healthcare pathways in this study, and activity ‘Anesthesia’ is only recorded in the appendicitis data sets for the eight patients that suffer from both appendicitis and cholecystitis. This demonstrates that conformance analysis is able to detect flaws in the hospital's information system.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=18cm,angle=270]{images/communicative_cholecystitis_process_models_anes.jpg}
-\caption{Cholecystitis pathway model using nomenclature of Tab.~\ref{table:notation table}. The model is broken down into one primary pathway and two sub-processes.}
-\label{fig:cholecystitis pathway model}
-\end{figure}
-
-\subsection{Length of Stays of Cholecystitis Pathway Variants}
-Length of stays are analyzed based on the 10 identified cholecystitis pathway variants shown in Fig.~\ref{fig:cholecystitis pathway variants}. Hospital length of stay, measured from admission to discharge, for each of the 10 cholecystitis pathway variants are shown in Fig.~\ref{fig:hospital length of stay cholecystitis}. Postoperative length of stay, measured from leaving theatre to discharge, for each pathway variant is shown in Fig.~\ref{fig:post op length of stay cholecystitis}. Pathway variant 1 appears to have the longest total postoperative length of stay even though it consists of no postoperative activities. All patients that follow pathway variant 1 suffer from both appendicitis and cholecystitis, and the clinicians confirmed that the long total postoperative length of stay could be due to a prolonged recovery time.  
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\textwidth]{images/hospital_length_of_stay_cholecystitis_210518.jpeg}
-\caption{Hospital length of stay of the 10 cholecystitis pathway variants, measured from admission to discharge.}
-\label{fig:hospital length of stay cholecystitis}
-\includegraphics[width=\textwidth]{images/postoperative_length_of_stay_cholecystitis.jpeg}
-\caption{Postoperative length of stay of the 10 cholecystitis pathway variants, measured from leaving theatre to discharge.}
-\label{fig:post op length of stay cholecystitis}
 \end{figure}
 
 \subsection{Probabilistic Machine Learning Model for Postoperative Length of Stay of Appendicitis Patients}
@@ -368,7 +307,7 @@ Length of stays are analyzed based on the 10 identified cholecystitis pathway va
 The following section investigates the question of whether the pathway
 variants of the appendicitis case study are relevant features or
 covariates for explaining the stochastic volatility of PLS (Fig.~\ref{fig:Geom}a).
-This is quite a challenging task, because the individual healing process is expected to depend on personal factors like age \cite{polanczyk2001impact} as well as the individual severity of the appendicitis inflammation, which in general is unknown at this stage of the data analysis, but might be captured by proxies like surgery duration (SD). As mentioned in Sec.~\ref{Sec:DataDescription}, demographics data on cholecystitis patients is unavailable so probabilistic models are only built for appendicitis patients.
+This is quite a challenging task, because the individual healing process is expected to depend on personal factors like age \cite{polanczyk2001impact} as well as the individual severity of the appendicitis inflammation, which in general is unknown at this stage of the data analysis, but might be captured by proxies like surgery duration (SD). 
 
 \begin{figure}
   \centering
@@ -542,7 +481,6 @@ However, the uncertainty of discharge probabilities for V1 is significantly larg
   appendicitis model.}
 \label{Fig:boxplot}
 \end{figure}
-%\include{cholecystitis}
 
 \section{Discussion from Thesis}
 The aim of this study is to use business process modelling methods to design a process mining pipeline that supports discovery, conformance analysis, and enrichment of healthcare pathways from hospital health records, and to apply the designed pipeline to two clinical case studies. Results from the two case studies indicate that the designed pipeline with ProM as the main process mining tool is effective for mining both simple and complex healthcare pathway models to produce a concise form that is easy for clinical interpretation. This chapter discusses the advantages and limitations of the proposed healthcare pathway mining method for the three stages of analysis (i.e. healthcare pathway discovery, conformance, and enrichment). Future research directions that would maximize this study’s potential for industrial implementation are also discussed.
@@ -568,7 +506,7 @@ pipeline that produces concise and comprehensible healthcare pathway
 models from hospital records, and supports conformance analysis and
 enrichment of the discovered pathways.
 The proposed process mining pipeline successfully constructs concise
-pathway models for the appendicitis and cholecystitis case studies.
+pathway models for the appendicitis case study.
 The produced healthcare pathway models are easy for clinical
 interpretation and provide an unbiased overview of real patient traces
 through the treatment process.
