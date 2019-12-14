@@ -43,7 +43,6 @@ Pathway discovery (identification of pathways without a priori knowledge), confo
 Past studies have shown that there is potential for informative
 healthcare pathways to be extracted from hospital health records
 \cite{Iwata2013, Xu2017, Yan2017_pathways}.
-
 Furthermore, an efficient workflow based on
 Business Process Modelling utilizing the process-mining software
 package ProM \cite{VanDongen2005} has been established
@@ -52,7 +51,29 @@ This systematic healthcare pathway mining method supports
 explicit design and conformance analysis of concise and comprehensible
 healthcare pathway models.
 
-The research described in this paper investigates the utilization of
+However, a field of research, which remains understudied despite the
+successes of machine
+learning in the context of precision driven
+medicine \cite{AdamAliferis2020_PDM}, is the application of healthcare
+pathways for predicting individualized health outcomes like recovery
+times.
+A possible explanation for this observation might be the fact, that
+health outcomes, which are quantified on a time
+domain, do exhibit in many cases fat tail distributions with dominant modes,
+such that classical point predictions are rarely better than
+predicting the respective expectation value. 
+An alternative to regression models, which provide point predictions or prediction intervals, are generative models \cite{Bishop2006_ML},
+  which predict posterior predictive distributions by applying
+  probabilistic machine learning \cite{Ghahramani2015_PML}.
+  
+In this case study, we are combining the knowledge about patient
+specific healthcare pathways of appendicitis surgeries with
+probabilistic machine learning models.
+For this purpose, we develop a geometric regression model, which
+quantifies the recovery time of a patient in terms of a geometric
+distribution, while taking into account patient specific pathway information.
+
+The paper is structured as follows: The pathway discovery The research described in this paper investigates the utilization of
 Business Process Modelling (BPM) as outlined by Becker et
 al.  to provide a scaffold for healthcare pathway
 discovery, conformance analysis and enrichment.
