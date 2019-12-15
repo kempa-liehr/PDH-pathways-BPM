@@ -361,6 +361,10 @@ This is the final pathway model that has been compiled based on
 clinical input to account for valid patient deviations, and all
 patient traces conform to the updated pathway.
 The most common pathway variant (index 0) shown in Fig.~\ref{fig:appendicitis pathway variants} corresponds to the horizontal path from start to finish in Fig.~\ref{fig:appendicitis pathway model}.
+Feedback from medical experts confirmed that the simplified
+appendicitis pathway model (Fig.~\ref{fig:appendicitis pathway model})
+correctly represents the As-Is process, while being easily
+interpretable.
 
 \begin{table}[t]
 \centering
@@ -419,7 +423,9 @@ The number of patient traces that follow each pathway variant is limited, and mo
 \label{sec:ML}
 The following section investigates the question of whether the pathway
 variants of the appendicitis case study are relevant features or
-covariates for explaining the stochastic volatility of PLS (Fig.~\ref{fig:Geom}a).
+covariates for explaining the stochastic volatility of postoperative
+Length of Stay (PLS, Fig.~\ref{fig:Geom}a), which is measured from
+leaving operating theatre to discharge.
 This is quite a challenging task, because the individual healing process is expected to depend on personal factors like age \cite{polanczyk2001impact} as well as the individual severity of the appendicitis inflammation, which in general is unknown at this stage of the data analysis, but might be captured by proxies like surgery duration (SD). 
 
 \begin{figure}
