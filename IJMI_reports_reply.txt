@@ -8,7 +8,7 @@ We have taking your comments carefully into account and have emphasized the prob
 
 Furthermore, we argue that the process mining techniques, which are used in this paper, are selected based on their ease for clinical interpretation and their potential to be combined with machine learning models. 
 
-Feedback from medical experts confirming the correctness and interpretability of the extracted appendicitis pathways has been explicitely stated.
+Feedback from medical experts confirming the correctness and interpretability of the extracted appendicitis pathways has been explicitly stated.
 
 The case study character of our contribution has been emphasized by providing a description of data sources and data used for the pathway discovery.
 
@@ -23,22 +23,22 @@ Thank you very much for your valuable feedback.
 We have included a description of data sources and EMR used for the pathway discovery.
 
 2. The authors need to clarify the reasons for choosing appendicitis and cholecystitis for case studies.
-We are now clearly stating that the appendicitis case study is selected because clinicians confirmed it is a relatively simple surgical pathway with clear start and end points. Because our paper is the first research to combine healthcare pathway discovery with probabilisitic machine learning, the model simplification following from well defined start and end points are quite important.
+We are now clearly stating that the appendicitis case study is selected because clinicians confirmed it is a relatively simple surgical pathway with clear start and endpoints. Because our paper is the first research to combine healthcare pathway discovery with probabilistic machine learning, the model simplification following from well-defined start and endpoints are quite important.
 
-3a. There are repeated processes in the Fig 2.
+3a. There are repeated processes in Fig 2.
 Each arrow represents either a start or an end event of an activity. This has been explained by introducing an additional figure showing an example process.
 
-3b. Some blocks (a sequence of process) repeatedly appear among these pathways.
-Every pathway variant is a unique sequence of events. The sequence of anesthesia and surgery events is of special importance, because the duration of surgery is an important feature for the probabilistic machine learning model.
+3b. Some blocks repeatedly appear among these pathways.
+Every pathway variant is a unique sequence of events. Therefore, it is expected that the major events of the appendicectomy appear in every pathway variant. The sequence of anaesthesia and surgery events is of special importance because the duration of surgery is an important feature for the probabilistic machine learning model.
 
-3c. We have included a figure showing the relation between pathway variants and lenght of stay.
+3c. We have included a figure showing the relation between pathway variants and length of stay.
 
-4. The conformance analysis is a general step of healthcare pathway mining. In our methodology we are using it for iteratively evaluating the learned pathways for possible simplifications like the clustering of events.
+4. The conformance analysis is a general step of healthcare pathway mining. In our methodology, we are using it for iteratively evaluating the learned pathways for possible simplifications like the clustering of events.
 
 5. The definition of the variable has been included in the respective section.
 
 6. There is no result for cholecystitis.
-The results of the cholecystitis pathway had been summarized in the appendix of the manuscript. However, due to word length restrictions, we have removed the cholescystitis results from the resubmitted version.
+The results of the cholecystitis pathway had been summarized in the appendix of the manuscript. However, due to word length restrictions, we have removed the cholecystitis results from the resubmitted version.
 
 7. The literature review has been extended while including the publications of Chen et al., Janevic et al., Yan et al., Mayer et al., and He et al.
 
