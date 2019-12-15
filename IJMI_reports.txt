@@ -1,0 +1,94 @@
+
+Ref: IJMI_2019_757
+Title: Healthcare Pathway Discovery, Conformance, and Enrichment
+Journal: International Journal of Medical Informatics
+
+Dear Dr. Kempa-Liehr,
+
+Thank you for submitting your manuscript to International Journal of Medical Informatics.
+
+I have completed my evaluation of your manuscript. The reviewers recommend reconsideration of your manuscript following revision. I invite you to resubmit your manuscript after addressing the comments below.
+
+When revising your manuscript, please consider all issues mentioned in the reviewers' comments carefully: please outline in a cover letter every change made in response to their comments and provide suitable rebuttals for any comments not addressed. Please note that your revised submission may need to be re-reviewed.
+
+If you would like to revise your manuscript, you first need to accept this invitation:
+
+Log into EVISE® at: http://www.evise.com/evise/faces/pages/navigation/NavController.jspx?JRNL_ACR=IJMI;
+Locate your manuscript under the header 'My Submissions that need Revisions' on your 'My Author Tasks' view; and
+Click on 'Agree to Revise'.
+Upon agreeing to revise your manuscript, your revision deadline will be displayed in your 'My Author Tasks' view.
+
+When you are ready, please submit your revision by logging into EVISE® at: http://www.evise.com/evise/faces/pages/navigation/NavController.jspx?JRNL_ACR=IJMI
+
+International Journal of Medical Informatics values your contribution and I look forward to receiving your revised manuscript.
+
+Kind regards,
+
+Anne-Sophie Jannot
+Associate Editor
+International Journal of Medical Informatics
+
+Editor and Reviewer Comments:
+-Reviewer 1
+
+  -
+
+The authors propose a Healthcare Pathway Mining methodology to create data-driven clinical pathways from clinical data. In the framework, they use the process mining and conformance analysis plug-ins supported by ProM. A case study is conducted to show the applicability of the proposed method. In the case study, machine learning techniques are also used to further relate healthcare pathways to performance indicators such as patient recovery time. The paper is well written and easy to follow. A case study shows the applicability of the proposed method and how to use machine learning techniques to investigate the process performance and clinical path. However, I have two major concerns. 
+ 
+The first one is that the proposed methodology is too general. The authors argue that this paper establishes the application of the business process modelling tool ProM for the improvement of healthcare pathway mining methods. However, there are already several previous works, and I could not see any novelty, at least in the methodology. 
+ 
+The authors said, “The use of ProM in the healthcare sector has not been thoroughly explored in the past, but Van Der Aalst et al. have demonstrated the applicability of the software for industrial processes [11].” I do not agree with this statement. [11] describes how to apply not ProM but process mining techniques in general. Furthermore, since [11] is the first case study paper that describes how to use process mining techniques in real business settings, it has a novel contribution. However, there is a large number of works devoted to CP discovery using process mining. Thus, it is difficult to see the contribution and novelty in this work. The authors should clearly describe the contribution of this work compared to the existing work. Specifically, some of the existing work proposes a methodology to analyze healthcare processes (clinical pathway) using process mining. For example, the book and the paper below also suggested some frameworks. The authors should compare their mythology with the existing ones.
+- "Process Mining in Healthcare" by Mans, van der Aalst, and Vanwersch
+- “Analysis and Optimization of a Sepsis Clinical Pathway using Process Mining” by Ricardo Alfredo Quintano Neira, Bart Franciscus Antonius Hompes, Gert-Jan de Vries, Bruno F. Mazza, Samantha L. Simões de Almeida, Erin Stretton, Joos C.A.M. Buijs and Silvio Hamacher.
+ 
+PM has a large number of algorithms, methods for process discovering, conformance checking, and process enhancement. In this paper, the authors selected some of them (e.g., Explore Event Log and Inductive Visual Miner) in the suggested framework. However, in my experiences, we have to consider several techniques and try many of them to find appropriate techniques in reality. How can we choose the proper ones? I think it is better to review several process mining techniques and explain how to choose proper ones in the methodology. 
+ 
+The second concern is that the case study does not include discussion or implication. It seems that the case study verified the proposed method, and the analysis result looks quite interesting. However, to validate the method, the feedback from medical experts about both the result of the analysis and the proposed methodology should be included in the case study. Since the case study looks more promising, I even recommend reshaping the paper emphasizing not the method but the case study, including the feedback from the hospital.
+
+
+-Reviewer 2
+
+  -
+This paper analyzed hospital data using the business process mining method. Particularly, this study designed a process mining pipeline for healthcare pathway discovery. Two case studies, including appendicitis and cholecystitis, were used to demonstrate the effectiveness of the developed pipeline. Overall, this paper is well organized. However, the following points need to be addressed before its publication.
+
+1.      The hospital data used in this study is unclear. The authors should provide detailed descriptions of the data. Otherwise, other researchers are hard to replicate such type of works in their institutions.
+
+2.      The authors need to clarify the reasons for choosing appendicitis and cholecystitis for case studies. Are the pathways for these two diseases not efficient enough and need to be optimized? Or other reasons?
+
+3.      In Figure 2, 13 pathway variants for appendicitis are depicted with the number of traces for each pathway. The reviewer has several questions about this plot as follows.
+
+·        There are repeated processes in the plot, for instance, from general surgery to general surgery in the first pathway (index 0). Did authors merge consecutive clinical activities? If they did, why the same surgery appearing multiple times in a pathway?
+
+·        Some blocks (a sequence of process) repeatedly appear among these pathways. For example, the block AnesthesiaàGeneral surgeryàGeneral surgeryàAnesthesia appears in all the 13 pathways. Is this block of any interest for the authors to investigate to optimize the process model?.
+
+·        The authors mention that some of the healthcare pathways are related to patients’ outcomes, such as hospital length of stay, recovery time and readmission rates. The reviewers would like to see what the outcomes for each pathway in Figure 2.
+
+4.      Why is the conformance analysis included in this study? What is the conclusion from this analysis? Although the patients were admitted to hospital for the same reason appendicitis, patients have health disparities, which may lead to different healthcare pathways.
+
+5.      The conclusion from data enrichment of appendicitis pathways (section 3.2) seems unclear to the reviewers. The definitions for these variables need to be stated in this section.
+
+6.      There is no result for cholecystitis.
+
+7.      The literature review is insufficient. There are many related works are published in the literature. The authors did not specify the differences between their research and the works in the literature.  Also, the innovation of the work is unclear.  The authors should take a look at the following papers.
+
+·        Chen Y, Patel MB, McNaughton CD, Malin BA. Interaction patterns of trauma providers are associated with length of stay. Journal of the American Medical Informatics Association. 2018 Feb 22;25(7):790-9.
+
+·        Janevic MR, Baptist AP, Bryant-Stephens T, Lara M, Persky V, Ramos-Valencia G, Uyeda K, Hazan R, Garrity A, Malveaux FJ. Effects of pediatric asthma care coordination in underserved communities on parent perceptions of care and asthma-management confidence. Journal of Asthma. 2017 May 28;54(5):514-9.
+
+·        Yan C, Chen Y, Li B, Liebovitz D, Malin B. Learning clinical workflows to identify subgroups of heart failure patients. In AMIA Annual Symposium Proceedings 2016 (Vol. 2016, p. 1248). American Medical Informatics Association.
+
+·        Mayer DK. Using Survivorship Care Plans to Enhance Communication and Cancer Care Coordination: Results of a Pilot Study. In Oncology nursing forum 2016 Sep 1 (Vol. 43, No. 5).
+
+·        He S, Gurr GE, Rea S, Thornton SN. Characterizing the Structure of a Patient's Care Team through Electronic Encounter Data Analysis. InMedInfo 2015 Jan (pp. 21-25).
+
+ 
+
+
+Have questions or need assistance?
+For further assistance, please visit our Customer Support site. Here you can search for solutions on a range of topics, find answers to frequently asked questions, and learn more about EVISE® via interactive tutorials. You can also talk 24/5 to our customer support team by phone and 24/7 by live chat and email.
+
+-------------------------------------------------------------
+
+Copyright © 2018 Elsevier B.V. | Privacy Policy
+
+Elsevier B.V., Radarweg 29, 1043 NX Amsterdam, The Netherlands, Reg. No. 33156677.
