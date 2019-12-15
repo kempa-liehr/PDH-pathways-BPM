@@ -19,10 +19,12 @@ Dear Reviewer,
 
 Thank you very much for your valuable feedback.
 
-1. The hospital data used in this study is unclear.
+>  Overall, this paper is well organized. However, the following points need to be addressed before its publication.
+
+> 1. The hospital data used in this study is unclear.
 We have included a description of data sources and EMR used for the pathway discovery.
 
-2. The authors need to clarify the reasons for choosing appendicitis and cholecystitis for case studies.
+> 2. The authors need to clarify the reasons for choosing appendicitis and cholecystitis for case studies.
 We are now clearly stating that the appendicitis case study is selected because clinicians confirmed it is a relatively simple surgical pathway with clear start and endpoints. Because our paper is the first research to combine healthcare pathway discovery with probabilistic machine learning, the model simplification following from well-defined start and endpoints are quite important.
 
 3a. There are repeated processes in Fig 2.
