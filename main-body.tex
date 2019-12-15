@@ -67,29 +67,29 @@ An alternative to regression models, which provide point predictions or predicti
   probabilistic machine learning \cite{Ghahramani2015_PML}.
   
   In this paper, we are presenting a case study, which uses the
-  pathway mining software ProM for discovering the appendectomy
+  pathway mining software ProM for discovering the appendicectomy
   pathways from EMRs of the North Shore Hospital in Auckland, New
   Zealand.
-  In order to identify a representative set of appendectomy
-  pathways, which can be discussed with and evaluated by clinicians,
-  pathway discovery and conformance analysis on the learned
-  pathways is done iteratively in order to condense repetive activity patterns.
-  The main contribution of this paper is the application of 
-  probabilistic machine learning for modelling patient specific
-  recovery times after appendectomy using pathway information from the
-  learned pathways like pathway variants and duration of surgery as well as selected demographics.
-  This model is able to replicate the dominant mode as well as the
+  The pathway discovery has a particular emphasis on producing pathway
+  models that are easy to interpret for clinicians without a
+  sufficient background in process mining.
+    The main contribution of this paper is the application of 
+  probabilistic machine learning for predicting patient specific
+  recovery times after appendicectomy using pathway information from the
+  learned pathways and other relevant EMR data.
+  This probabilistic model is able to replicate the dominant mode as well as the
   fat tail of the empirical recovery time distribution and has the
   potential to be developed into an advanced planning tool.
 
-  The paper is organized along the healthcare knowledge management
-  process and starts with a description of the hospital data used for
-  the case study,
-  the knowledge discovery process respectively the healthcare pathway
-  mining, the knowledge translation and interpretation on the basis of
-  the probabilistic machine learning model, and of course this paper
-  itself represents the fourth step of the process (knowledge
-  diescription, integration \& sharing). 
+  The paper is organized as follows: The healthcare pathway mining
+  methodology is described in Sec.~\ref{Sec:HPMM}. The appendicectomy
+  case study (Sec.~\ref{Sec:Appendicitis}) starts with a description
+  of the EMRs used for
+  the case study, discusses the results of the appendicitis pathway
+  discovery, and analyses pathway specific performance indicators.
+  The probabilistic machine learning model is introduced and evaluated
+  in Sec.~\ref{sec:ML}.
+  The paper closes with conclusions and an outlook in Sec.~\ref{Sec:Conclusion}.
     
   %This is different to Simplified Clinical Pathway Analysis Method
   %(SCPAM, \cite{QuintanoNeira2019_pathways}).
@@ -115,8 +115,9 @@ An alternative to regression models, which provide point predictions or predicti
 %     \end{itemize}
 % \end{enumerate}
 
-\section{Healthcare Pathway Mining Methodology}
-This section outlines the process mining pipeline designed for mining and analyzing healthcare pathways using hospital patient records. This study adopts the scientific computing practices recommended by Wilson et al. \cite{Wilson2014}, \cite{Wilson2017} to ensure that all results are reproducible. The proposed process mining pipeline consists of three major phases that correspond to each of the three main objectives (i.e. pathway discovery, conformance, and enrichment). An overview of the process mining pipeline applied for this study is shown in Fig.~\ref{fig:pipeline}.  The following sections elaborate the three phases of the proposed pipeline and their respective objectives.
+  \section{Healthcare Pathway Mining Methodology}
+  \label{Sec:HPMM}
+This section outlines the process mining pipeline designed for mining and analyzing healthcare pathways using hospital patient records. This study adopts the scientific computing practices recommended by Wilson et al. \cite{Wilson2014}, \cite{Wilson2017} to ensure that all results are reproducible. The process mining pipeline consists of three major phases that correspond to each of the three main objectives (i.e. pathway discovery, conformance, and enrichment). An overview of the process mining pipeline applied for this study is shown in Fig.~\ref{fig:pipeline}.  The following sections elaborate the three phases of the proposed pipeline and their respective objectives.
 
 \begin{figure}[t]
 \centering
@@ -132,6 +133,9 @@ This section outlines the process mining pipeline designed for mining and analyz
 This study uses ProM (version 6.7) as the main process mining tool\footnote{\url{http://www.promtools.org}}. 
 ProM is an open-source process mining software that is effective for construction of business models from input data files. ProM is chosen for this study because it has an intuitive user interface and supports many process mining plug-ins \cite{VanDongen2005}. The process mining and conformance analysis plug-ins supported by ProM are well documented. All these features of ProM make it easy for the process mining steps in the pipeline (see Fig.~\ref{fig:pipeline}) to be repeated by users with no background in process mining. The process mining techniques used in this paper are selected based on their ease for clinical interpretation and their potential to be combined with machine learning models. 
 
+\begin{itemize}
+\item simplification
+\end{itemize}
 \subsection{Healthcare Pathway Discovery}
 Healthcare pathway discovery is the first phase of the process mining pipeline. It consists of two steps: clinical data processing and pathway visualization, which are conducted iteratively until a concise model is produced.
 The aim is to use patient healthcare records stored in hospital information systems to design a concise pathway model that is easy for clinical interpretation. Therefore, clinical input is critical to the selection of appropriate processing methods. 
@@ -231,12 +235,16 @@ takes into account pathway variants
 SD (Sec.~\ref{sec:ML}).
 
 \section{Case Study: Appendicitis Healthcare Pathways}
+\label{Sec:Appendicitis}
 This section discusses the healthcare pathway mining and analysis process for an appendicitis case study. For this purpose, two years’ worth of data
 from 2015 to 2017 on 448 appendicitis patients have been analysed. This case study is selected because clinicians confirmed it is a relatively simple surgical pathway with clear start and end points.
 
 \subsection{Data Description}
 \label{Sec:DataDescription}
-The patient records for this case study were collected from North Shore Hospital in Auckland, New Zealand. The electronic patient records in North Shore Hospital are stored using the Radiology Information System (RIS) and the iPM patient administration system owned by iSoft.
+The patient records for this case study were collected from North
+Shore Hospital in Auckland, New Zealand. The electronic patient
+records in North Shore Hospital are stored using the Radiology
+Information System (RIS) and the patient administration system iPM.
 The extracted data were de-identified and an ethics approval for this research was obtained. All data sets collected from the hospital's information system on appendicitis patients are summarized in Tab.~\ref{table:data description table}. Theatre encounter is the system ID used to identify patient traces, and clinical activities are categorized by clinical departments (e.g. radiology, pharmacy). A column labelled `Pre-Op/Post-Op' indicates whether a clinical activity is performed before or after surgery, and contents of this column are appended as prefixes to the clinical activities during data processing. Processed data sets are imported into ProM for pathway discovery and conformance analysis.
 
 \newcommand{\tabitem}{~~\llap{\textbullet}~~}
@@ -392,7 +400,16 @@ The most common pathway variant (index 0) shown in Fig.~\ref{fig:appendicitis pa
 \end{table}
 
 \subsection{Length of Stays of Appendicitis Pathway Variants}
-Length of stays in hospital are analyzed based on the 13 identified appendicitis pathway variants shown in Fig.~\ref{fig:appendicitis pathway variants}. Postoperative length of stay, measured from leaving theatre to discharge, for each of the 13 appendicitis pathway variants are shown in Fig.~\ref{fig:post op length of stay appendicitis}. Pathway variant 9 has the longest postoperative length of stay. Pathway variants 5, 7 and 11 also have relatively long postoperative length of stays. Out of these four pathway variants, only pathway variant 7 consists of no postoperative activities. The number of patient traces that follow each pathway variant is limited, and more samples are required to identify rate-determining steps. Probabilistic machine learning models are used to further investigate factors influencing postoperative length of stay (Sec.~\ref{sec:ML}).
+Length of stays in hospital are analyzed based on the 13 identified
+appendicitis pathway variants shown in Fig.~\ref{fig:appendicitis
+  pathway variants}. Postoperative length of stay, measured from
+leaving theatre to discharge, for each of the 13 appendicitis pathway
+variants are shown in Fig.~\ref{fig:post op length of stay
+  appendicitis}. Pathway variant 9 has the longest postoperative
+length of stay. Pathway variants 5, 7 and 11 also have relatively long
+postoperative length of stays.
+Only pathway variant 7 does not include any postoperative activities.
+The number of patient traces that follow each pathway variant is limited, and more samples are required to identify rate-determining steps. Probabilistic machine learning models are used to further investigate factors influencing postoperative length of stay (Sec.~\ref{sec:ML}).
 
 \begin{figure}[t]
 \centering
@@ -401,7 +418,7 @@ Length of stays in hospital are analyzed based on the 13 identified appendicitis
 \label{fig:post op length of stay appendicitis}
 \end{figure}
 
-\subsection{Probabilistic Machine Learning Model for Postoperative Length of Stay of Appendicitis Patients}
+\section{Probabilistic Machine Learning Model for Postoperative Length of Stay of Appendicitis Patients}
 \label{sec:ML}
 The following section investigates the question of whether the pathway
 variants of the appendicitis case study are relevant features or
@@ -566,7 +583,7 @@ V3         &  0.766 &   0.199 &   1.363 &  1.000046 \\
     \label{fig:posterior}
 \end{figure}
 
-This is visualized in Fig.~\ref{fig:posterior}, which shows the posterior distributions of discharge probability $p_i$ as function of SD (Fig.~\ref{fig:posterior}(a)) and age (Fig.~\ref{fig:posterior}(c)). While the discharge probability decreases with increasing SD for all pathway variants (Fig.~\ref{fig:posterior}(b)), the effect is different for age. 
+This is visualized in Fig.~\ref{fig:posterior}, which shows the posterior distributions of discharge probability $p_i$ as function of SD (Fig.~\ref{fig:posterior}a) and age (Fig.~\ref{fig:posterior}c). While the discharge probability decreases with increasing SD for all pathway variants (Fig.~\ref{fig:posterior}b), the effect is different for age. 
 The discharge probability $p_i$ decreases for Variants V2, V3, and V4-V12 with increasing age of the patients, while its expectation value is constant for $V1$ and even increases by nearly 10\% for V0. Note, that the corresponding graphics for model A \eqref{modelA}, which are not shown here, resemble nearly the same correlations. 
 From the clinical perspective, the difference in effects of age with
 respect to the pathway variants might be related to the fact that the
@@ -594,7 +611,8 @@ The enrichment stage of the designed process mining pipeline is effective for id
 Analysis of pathway performance based on pathway variants reveals associations between clinical activities and performance indicators, but associations do not necessarily indicate causation. For example, the appendicitis pathway variants from the first case study that consist of postoperative imaging activities generally have longer postoperative length of stays, even though larger samples are required to confirm this connection (see §3.9). One possible explanation is that appendicitis patients that develop extra complications are more likely to require postoperative imaging activities. These are also the patients that remain under monitoring for a longer time period and hence have a delayed discharge date. Similarly, the ambulatory cardiac care pathway variants from the second case study that consist of visits to the emergency department generally have higher mortality rates (see §4.84.8). In both of these cases, patient condition is the main factor that influences the pathway performance indicators.
 Dr. Andreas W. Kempa-Liehr’s work on developing probabilistic models to predict postoperative length of stay using information from the discovered healthcare pathway has the potential to improve the efficiency of hospital scheduling and resource allocation. This also shows that the proposed process mining pipeline has the potential to support the development of machine learning models for the prediction of performance indicators. A future improvement that could be made to the proposed pipeline is the incorporation of clinical diagnosis into the healthcare pathway models. Incorporating clinical diagnosis into pathway models allows for the identification of critical decision points where pathway variants diverge, but the main challenge is obtaining access to clinical diagnostic data. Overall, there is potential for the use of business process modelling techniques to improve the method of analysis of healthcare pathways, but the capability of other more specialized business process mining software should also be explored.
 
-\section{Conclusion}
+\section{Conclusion and Outlook}
+\label{Sec:Conclusion}
 Healthcare pathways are critical for maintaining quality of care and
 improving health outcome for all patients, but there is no consensus
 on a healthcare pathway mining pipeline suitable for hospital
