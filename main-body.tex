@@ -66,33 +66,54 @@ An alternative to regression models, which provide point predictions or predicti
   which predict posterior predictive distributions by applying
   probabilistic machine learning \cite{Ghahramani2015_PML}.
   
-In this case study, we are combining the knowledge about patient
-specific healthcare pathways of appendicitis surgeries with
-probabilistic machine learning models.
-For this purpose, we develop a geometric regression model, which
-quantifies the recovery time of a patient in terms of a geometric
-distribution, while taking into account patient specific pathway information.
+  In this paper, we are presenting a case study, which uses the
+  pathway mining software ProM for discovering the appendectomy
+  pathways from EMRs of the North Shore Hospital in Auckland, New
+  Zealand.
+  In order to identify a representative set of appendectomy
+  pathways, which can be discussed with and evaluated by clinicians,
+  pathway discovery and conformance analysis on the learned
+  pathways is done iteratively in order to condense repetive activity patterns.
+  The main contribution of this paper is the application of 
+  probabilistic machine learning for modelling patient specific
+  recovery times after appendectomy using pathway information from the
+  learned pathways like pathway variants and duration of surgery as well as selected demographics.
+  This model is able to replicate the dominant mode as well as the
+  fat tail of the empirical recovery time distribution and has the
+  potential to be developed into an advanced planning tool.
 
-The paper is structured as follows: The pathway discovery is The research described in this paper investigates the utilization of
-Business Process Modelling (BPM) as outlined by Becker et
-al.  to provide a scaffold for healthcare pathway
-discovery, conformance analysis and enrichment.
-The main objectives of applying BPM to healthcare data include:
-\begin{enumerate}
-    \item Pathway discovery
-    \begin{itemize}
-        \item Investigate the potential of ProM (a process-mining software package) to discover healthcare pathways from hospital records .
-    \end{itemize}
-    \item Conformance analysis
-    \begin{itemize}
-        \item Apply BPM conformance analysis to discovered healthcare pathways. 
-        \item Improve detection of possible non-conformance and explain anomalies.
-    \end{itemize}
-    \item Data enrichment
-    \begin{itemize}
-        \item Investigate correlation between healthcare pathway and performance indicators (e.g., patient length-of-stay, readmission rate).
-    \end{itemize}
-\end{enumerate}
+  The paper is organized along the healthcare knowledge management
+  process and starts with a description of the hospital data used for
+  the case study,
+  the knowledge discovery process respectively the healthcare pathway
+  mining, the knowledge translation and interpretation on the basis of
+  the probabilistic machine learning model, and of course this paper
+  itself represents the fourth step of the process (knowledge
+  diescription, integration \& sharing). 
+    
+  %This is different to Simplified Clinical Pathway Analysis Method
+  %(SCPAM, \cite{QuintanoNeira2019_pathways}).
+  
+ % The research described in this paper investigates the utilization of
+% Business Process Modelling (BPM) as outlined by Becker et
+% al.  to provide a scaffold for healthcare pathway
+% discovery, conformance analysis and enrichment.
+% The main objectives of applying BPM to healthcare data include:
+% \begin{enumerate}
+%     \item Pathway discovery
+%     \begin{itemize}
+%         \item Investigate the potential of ProM (a process-mining software package) to discover healthcare pathways from hospital records .
+%     \end{itemize}
+%     \item Conformance analysis
+%     \begin{itemize}
+%         \item Apply BPM conformance analysis to discovered healthcare pathways. 
+%         \item Improve detection of possible non-conformance and explain anomalies.
+%     \end{itemize}
+%     \item Data enrichment
+%     \begin{itemize}
+%         \item Investigate correlation between healthcare pathway and performance indicators (e.g., patient length-of-stay, readmission rate).
+%     \end{itemize}
+% \end{enumerate}
 
 \section{Healthcare Pathway Mining Methodology}
 This section outlines the process mining pipeline designed for mining and analyzing healthcare pathways using hospital patient records. This study adopts the scientific computing practices recommended by Wilson et al. \cite{Wilson2014}, \cite{Wilson2017} to ensure that all results are reproducible. The proposed process mining pipeline consists of three major phases that correspond to each of the three main objectives (i.e. pathway discovery, conformance, and enrichment). An overview of the process mining pipeline applied for this study is shown in Fig.~\ref{fig:pipeline}.  The following sections elaborate the three phases of the proposed pipeline and their respective objectives.
