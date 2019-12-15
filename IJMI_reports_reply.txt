@@ -12,6 +12,8 @@ Feedback from medical experts confirming the correctness and interpretability of
 
 The case study character of our contribution has been emphasized by providing a description of data sources and data used for the pathway discovery.
 
+With kind regards,
+Andreas W. Kempa-Liehr, Christina Yin-Chieh Lin, Randall Britten, Delwyn Armstrong, Jonathan Wallace, Dylan Mordaunte, and Michael O’Sullivan
 
 * Reviewer 2
 
@@ -44,5 +46,6 @@ The results of the cholecystitis pathway had been summarized in the appendix of 
 
 7. The literature review has been extended while including the publications of Chen et al., Janevic et al., Yan et al., Mayer et al., and He et al.
 
-
+With kind regards,
+Andreas W. Kempa-Liehr, Christina Yin-Chieh Lin, Randall Britten, Delwyn Armstrong, Jonathan Wallace, Dylan Mordaunte, and Michael O’Sullivan
 
